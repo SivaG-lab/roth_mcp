@@ -124,15 +124,15 @@
 
 ### Tests for User Story 4
 
-- [ ] T032 [P] [US4] Create `tests/test_html_templates.py` — test format_validation_result (green #22c55e), format_tax_estimate (red #ef4444, table rows), format_projection_table (blue, 5-year summary + details), format_optimization_schedule (purple), format_breakeven (blue, assessment text), format_report (all sections present, styled)
+- [X] T032 [P] [US4] Create `tests/test_html_templates.py` — test format_validation_result (green #22c55e), format_tax_estimate (red #ef4444, table rows), format_projection_table (blue, 5-year summary + details), format_optimization_schedule (purple), format_breakeven (blue, assessment text), format_report (all sections present, styled)
 
 ### Implementation for User Story 4
 
-- [ ] T033 [P] [US4] Implement `html/styles.py` — color constants (VALIDATION_GREEN=#22c55e, TAX_RED=#ef4444, PROJECTION_BLUE=#3b82f6, OPTIMIZATION_PURPLE, REPORT_FULL), font/spacing constants, shared CSS snippets
-- [ ] T034 [US4] Implement `html/templates.py` — format_validation_result(), format_tax_estimate() with table, format_projection_table() with 5-year summary + collapsible `<details>` for full table, format_optimization_schedule(), format_breakeven() with assessment, format_report() comprehensive styled document with all sections
-- [ ] T035 [US4] Update `html/__init__.py` — export all 6 formatter functions
-- [ ] T036 [US4] Wire HTML templates into `mcp_server.py` tools — each tool calls its formatter before dual_return()
-- [ ] T037 [US4] Run all US4 tests — verify HTML structure, colors, all sections present
+- [X] T033 [P] [US4] Implement `html_templates/styles.py` — color constants (VALIDATION_GREEN=#22c55e, TAX_RED=#ef4444, PROJECTION_BLUE=#3b82f6, OPTIMIZATION_PURPLE, REPORT_FULL), font/spacing constants, shared CSS snippets
+- [X] T034 [US4] Implement `html_templates/templates.py` — format_validation_result(), format_tax_estimate() with table, format_projection_table() with 5-year summary + collapsible `<details>` for full table, format_optimization_schedule(), format_breakeven() with assessment, format_report() comprehensive styled document with all sections
+- [X] T035 [US4] Update `html_templates/__init__.py` — export all 6 formatter functions
+- [X] T036 [US4] Wire HTML templates into `mcp_server.py` tools — each tool calls its formatter before dual_return()
+- [X] T037 [US4] Run all US4 tests — verify HTML structure, colors, all sections present
 
 **Checkpoint**: Each tool returns styled HTML cards. Validation=green, Tax=red, Projection/Breakeven=blue, Optimization=purple, Report=full style.
 

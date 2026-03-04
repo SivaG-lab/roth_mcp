@@ -14,6 +14,14 @@ from tax.brackets import STANDARD_DEDUCTIONS, get_marginal_rate
 from tax.rmd import compute_rmd
 from tax.irmaa import compute_irmaa_surcharge
 from tax.ss import compute_ss_taxation
+from html_templates import (
+    format_validation_result,
+    format_tax_estimate,
+    format_projection_table,
+    format_optimization_schedule,
+    format_breakeven,
+    format_report,
+)
 
 mcp = FastMCP("roth-conversion-calculator")
 
@@ -47,55 +55,8 @@ def validate_projection_inputs(
     ALWAYS call this tool first with any financial information the user provides."""
     kwargs = {k: v for k, v in locals().items() if v is not None}
     result = validate_inputs(**kwargs)
-
-    # Build HTML display
-    status = result["status"]
-    if status == "complete":
-        html = _html_validation_complete(result)
-    elif status == "error":
-        html = _html_validation_error(result)
-    else:
-        html = _html_validation_incomplete(result)
-
+    html = format_validation_result(result)
     return dual_return(html, result)
-
-
-def _html_validation_complete(result: dict) -> str:
-    inputs = result["inputs"]
-    auto = result["auto_filled"]
-    rows = "".join(
-        f"<tr><td style='padding:4px 8px'>{k}</td><td style='padding:4px 8px'>{v}</td></tr>"
-        for k, v in inputs.items()
-    )
-    auto_rows = "".join(
-        f"<tr><td style='padding:4px 8px'>{k}</td><td style='padding:4px 8px'>{v['value']} ({v['reason']})</td></tr>"
-        for k, v in auto.items()
-    )
-    return (
-        f"<div style='border:2px solid #22c55e;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#22c55e;margin:0 0 8px'>✓ Inputs Validated</h3>"
-        f"<table>{rows}</table>"
-        + (f"<h4 style='margin:8px 0 4px'>Auto-filled</h4><table>{auto_rows}</table>" if auto else "")
-        + "</div>"
-    )
-
-
-def _html_validation_incomplete(result: dict) -> str:
-    missing = ", ".join(result["missing"])
-    return (
-        f"<div style='border:2px solid #f59e0b;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#f59e0b'>⚠ Incomplete Inputs</h3>"
-        f"<p>Missing: {missing}</p></div>"
-    )
-
-
-def _html_validation_error(result: dict) -> str:
-    errs = "".join(f"<li>{e['field']}: {e['message']}</li>" for e in result["errors"])
-    return (
-        f"<div style='border:2px solid #ef4444;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#ef4444'>✗ Validation Errors</h3>"
-        f"<ul>{errs}</ul></div>"
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -133,23 +94,7 @@ def estimate_tax_components(
         other_ordinary_income=other_ordinary_income,
     )
 
-    # Build HTML
-    html = (
-        f"<div style='border:2px solid #ef4444;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#ef4444;margin:0 0 8px'>Tax Estimate: ${conversion_amount:,.0f} Conversion</h3>"
-        f"<table style='width:100%'>"
-        f"<tr><td>Federal Tax</td><td style='text-align:right'>${result['federal_tax']:,.2f}</td></tr>"
-        f"<tr><td>State Tax ({state})</td><td style='text-align:right'>${result['state_tax']:,.2f}</td></tr>"
-        f"<tr><td>IRMAA Impact</td><td style='text-align:right'>${result['irmaa_impact']:,.2f}</td></tr>"
-        f"<tr><td>SS Tax Impact</td><td style='text-align:right'>${result['ss_tax_impact']:,.2f}</td></tr>"
-        f"<tr><td>RMD Tax</td><td style='text-align:right'>${result['rmd_tax']:,.2f}</td></tr>"
-        f"<tr style='font-weight:bold;border-top:2px solid #666'>"
-        f"<td>Total Tax Cost</td><td style='text-align:right'>${result['total_tax_cost']:,.2f}</td></tr>"
-        f"</table>"
-        f"<p style='margin:8px 0 0;color:#999'>Effective rate: {result['effective_rate']:.1%} | "
-        f"Bracket: {result['bracket_before']} → {result['bracket_after']}</p></div>"
-    )
-
+    html = format_tax_estimate(result)
     return dual_return(html, result)
 
 
@@ -243,34 +188,7 @@ def analyze_roth_projections(
     }
 
     data = {"projections": projections, "summary": summary}
-
-    # Build HTML (5-year summary + collapsible details)
-    rows_5yr = ""
-    for p in projections[:5]:
-        rows_5yr += (
-            f"<tr><td>{p['year']}</td><td>{p['age']}</td>"
-            f"<td>${p['conversion']:,.0f}</td><td>${p['roth_balance']:,.0f}</td>"
-            f"<td>${p['trad_balance']:,.0f}</td></tr>"
-        )
-    all_rows = ""
-    for p in projections:
-        all_rows += (
-            f"<tr><td>{p['year']}</td><td>{p['age']}</td>"
-            f"<td>${p['conversion']:,.0f}</td><td>${p['roth_balance']:,.0f}</td>"
-            f"<td>${p['trad_balance']:,.0f}</td><td>${p['tax_paid']:,.0f}</td></tr>"
-        )
-
-    html = (
-        f"<div style='border:2px solid #3b82f6;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#3b82f6;margin:0 0 8px'>Roth Conversion Projections</h3>"
-        f"<p>Net benefit: ${summary['net_benefit']:,.0f} | Crossover year: {summary['crossover_year'] or 'N/A'}</p>"
-        f"<table><tr><th>Year</th><th>Age</th><th>Convert</th><th>Roth</th><th>Trad</th></tr>"
-        f"{rows_5yr}</table>"
-        f"<details><summary>Show all {model_years} years</summary>"
-        f"<table><tr><th>Year</th><th>Age</th><th>Convert</th><th>Roth</th><th>Trad</th><th>Tax</th></tr>"
-        f"{all_rows}</table></details></div>"
-    )
-
+    html = format_projection_table(data)
     return dual_return(html, data)
 
 
@@ -371,19 +289,7 @@ def optimize_conversion_schedule(
         "confidence": max(confidence, 0),
     }
 
-    # Build HTML
-    sched_rows = "".join(
-        f"<tr><td>Year {i+1}</td><td>${amt:,.0f}</td></tr>"
-        for i, amt in enumerate(schedule) if amt > 0
-    )
-    html = (
-        f"<div style='border:2px solid #8b5cf6;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#8b5cf6;margin:0 0 8px'>Optimal Conversion Schedule</h3>"
-        f"<table>{sched_rows}</table>"
-        f"<p>Total tax: ${total_tax:,.0f} | Saved vs lump-sum: ${max(tax_saved,0):,.0f}</p>"
-        f"<p>Converged: {'Yes' if converged else 'No'} | Confidence: {confidence:.0%}</p></div>"
-    )
-
+    html = format_optimization_schedule(data)
     return dual_return(html, data)
 
 
@@ -447,16 +353,7 @@ def breakeven_analysis(
         "assessment": assessment,
     }
 
-    color = "#22c55e" if assessment == "worth_it" else "#f59e0b" if assessment == "marginal" else "#ef4444"
-    label = {"worth_it": "Worth It", "marginal": "Marginal", "not_worth_it": "Not Worth It"}
-    html = (
-        f"<div style='border:2px solid #3b82f6;border-radius:8px;padding:16px;margin:8px 0'>"
-        f"<h3 style='color:#3b82f6;margin:0 0 8px'>Breakeven Analysis</h3>"
-        f"<p>Breakeven in <strong>{breakeven_years} years</strong> (age {breakeven_age})</p>"
-        f"<p style='color:{color};font-weight:bold;font-size:1.2em'>"
-        f"Assessment: {label.get(assessment, assessment)}</p></div>"
-    )
-
+    html = format_breakeven(data)
     return dual_return(html, data)
 
 
@@ -489,91 +386,19 @@ def generate_conversion_report(
     opt_data = _safe_parse(optimization_data)
     be_data = _safe_parse(breakeven_data)
 
+    report_html = format_report(inputs_data, tax_data, proj_data, opt_data, be_data)
+
     sections_included = []
-
-    # Build report sections
-    html_parts = [
-        "<div style='font-family:system-ui;max-width:800px;margin:0 auto;padding:20px'>"
-        "<h1 style='color:#3b82f6;border-bottom:3px solid #3b82f6;padding-bottom:8px'>"
-        "Roth Conversion Analysis Report</h1>"
-        "<p style='color:#999'>Generated by Roth Conversion Calculator MCP v2.0</p>"
-    ]
-
-    # Input summary
     if inputs_data:
         sections_included.append("inputs")
-        user_inputs = inputs_data.get("inputs", inputs_data)
-        rows = "".join(
-            f"<tr><td style='padding:4px 8px'>{k}</td><td style='padding:4px 8px'>{v}</td></tr>"
-            for k, v in user_inputs.items()
-            if k != "conversion_schedule" or v
-        )
-        html_parts.append(
-            f"<h2>Input Summary</h2><table style='border-collapse:collapse'>{rows}</table>"
-        )
-
-    # Tax analysis
     if tax_data and "federal_tax" in tax_data:
         sections_included.append("tax")
-        html_parts.append(
-            f"<h2>Tax Analysis</h2>"
-            f"<table>"
-            f"<tr><td>Federal Tax</td><td>${tax_data.get('federal_tax', 0):,.2f}</td></tr>"
-            f"<tr><td>State Tax</td><td>${tax_data.get('state_tax', 0):,.2f}</td></tr>"
-            f"<tr><td>IRMAA Impact</td><td>${tax_data.get('irmaa_impact', 0):,.2f}</td></tr>"
-            f"<tr><td>SS Tax Impact</td><td>${tax_data.get('ss_tax_impact', 0):,.2f}</td></tr>"
-            f"<tr style='font-weight:bold'><td>Total Tax Cost</td>"
-            f"<td>${tax_data.get('total_tax_cost', 0):,.2f}</td></tr>"
-            f"<tr><td>Effective Rate</td><td>{tax_data.get('effective_rate', 0):.1%}</td></tr>"
-            f"<tr><td>Bracket Change</td>"
-            f"<td>{tax_data.get('bracket_before', '')} → {tax_data.get('bracket_after', '')}</td></tr>"
-            f"</table>"
-        )
-
-    # Projections
-    if proj_data and "summary" in proj_data:
+    if proj_data and "projections" in proj_data:
         sections_included.append("projection")
-        s = proj_data["summary"]
-        html_parts.append(
-            f"<h2>Projection Summary</h2>"
-            f"<p>Final Roth Value: ${s.get('final_roth_value', 0):,.0f}</p>"
-            f"<p>Final Trad Value: ${s.get('final_trad_value', 0):,.0f}</p>"
-            f"<p>Net Benefit: ${s.get('net_benefit', 0):,.0f}</p>"
-            f"<p>Crossover Year: {s.get('crossover_year', 'N/A')}</p>"
-        )
-
-    # Optimization
     if opt_data and "optimal_schedule" in opt_data:
         sections_included.append("optimization")
-        sched = opt_data["optimal_schedule"]
-        nonzero = [(i + 1, a) for i, a in enumerate(sched) if a > 0]
-        rows = "".join(f"<tr><td>Year {y}</td><td>${a:,.0f}</td></tr>" for y, a in nonzero)
-        html_parts.append(
-            f"<h2>Optimal Schedule</h2><table>{rows}</table>"
-            f"<p>Total tax: ${opt_data.get('total_tax_cost', 0):,.0f} | "
-            f"Saved: ${opt_data.get('tax_saved_vs_baseline', 0):,.0f}</p>"
-        )
-
-    # Breakeven
     if be_data and "assessment" in be_data:
         sections_included.append("breakeven")
-        html_parts.append(
-            f"<h2>Breakeven Analysis</h2>"
-            f"<p>Breakeven: {be_data.get('breakeven_years', 0)} years "
-            f"(age {be_data.get('breakeven_age', 0)})</p>"
-            f"<p>Assessment: <strong>{be_data.get('assessment', 'N/A')}</strong></p>"
-        )
-
-    # Disclaimer
-    html_parts.append(
-        "<hr style='margin:20px 0'>"
-        "<p style='color:#999;font-size:0.85em'>"
-        "⚠ This analysis is for educational purposes only and does not constitute tax advice. "
-        "Consult a qualified tax professional before making conversion decisions.</p>"
-        "</div>"
-    )
-
-    report_html = "\n".join(html_parts)
 
     summary = {
         "total_tax_cost": tax_data.get("total_tax_cost", 0),
