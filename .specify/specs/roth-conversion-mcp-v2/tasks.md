@@ -101,16 +101,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T025 [P] [US3] Create `tests/test_tools.py` — test each of 6 tool functions directly (bypass MCP transport): validate_projection_inputs with complete/incomplete inputs, estimate_tax_components with known values, analyze_roth_projections produces year-by-year data, optimize_conversion_schedule returns schedule, breakeven_analysis returns assessment, generate_conversion_report assembles sections
+- [X] T025 [P] [US3] Create `tests/test_tools.py` — test each of 6 tool functions directly (bypass MCP transport): validate_projection_inputs with complete/incomplete inputs, estimate_tax_components with known values, analyze_roth_projections produces year-by-year data, optimize_conversion_schedule returns schedule, breakeven_analysis returns assessment, generate_conversion_report assembles sections
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implement `mcp_server.py` — FastMCP("roth-conversion-calculator") server with stdio transport, tool 1: validate_projection_inputs (calls validators.py, returns dual-return), tool 2: estimate_tax_components (calls tax/calculator.py, returns dual-return)
-- [ ] T027 [US3] Add tool 3 to `mcp_server.py` — analyze_roth_projections: year-by-year loop calling compute_tax_components() per year, track convert vs no-convert balances, apply RMDs at age 73+, return projections + summary via dual-return
-- [ ] T028 [US3] Add tool 4 to `mcp_server.py` — optimize_conversion_schedule: greedy bracket-fill algorithm, iterate years from current_age to retirement_age, call compute_bracket_boundaries() + compute_tax_components() per candidate, max 100 iterations, return optimal_schedule via dual-return
-- [ ] T029 [US3] Add tool 5 to `mcp_server.py` — breakeven_analysis: Roth path vs Traditional path comparison, compute breakeven year, assessment logic (worth_it/marginal/not_worth_it), return via dual-return
-- [ ] T030 [US3] Add tool 6 to `mcp_server.py` — generate_conversion_report: parse JSON string inputs (validated_inputs, tax_analysis, projection_data, optimization_data, breakeven_data), assemble comprehensive HTML report, handle missing sections gracefully, return via dual-return
-- [ ] T031 [US3] Run all US3 tests — verify all 6 tools return valid dual-return JSON, fix any failures
+- [X] T026 [US3] Implement `mcp_server.py` — FastMCP("roth-conversion-calculator") server with stdio transport, tool 1: validate_projection_inputs (calls validators.py, returns dual-return), tool 2: estimate_tax_components (calls tax/calculator.py, returns dual-return)
+- [X] T027 [US3] Add tool 3 to `mcp_server.py` — analyze_roth_projections: year-by-year loop calling compute_tax_components() per year, track convert vs no-convert balances, apply RMDs at age 73+, return projections + summary via dual-return
+- [X] T028 [US3] Add tool 4 to `mcp_server.py` — optimize_conversion_schedule: greedy bracket-fill algorithm, iterate years from current_age to retirement_age, call compute_bracket_boundaries() + compute_tax_components() per candidate, max 100 iterations, return optimal_schedule via dual-return
+- [X] T029 [US3] Add tool 5 to `mcp_server.py` — breakeven_analysis: Roth path vs Traditional path comparison, compute breakeven year, assessment logic (worth_it/marginal/not_worth_it), return via dual-return
+- [X] T030 [US3] Add tool 6 to `mcp_server.py` — generate_conversion_report: parse JSON string inputs (validated_inputs, tax_analysis, projection_data, optimization_data, breakeven_data), assemble comprehensive HTML report, handle missing sections gracefully, return via dual-return
+- [X] T031 [US3] Run all US3 tests — verify all 6 tools return valid dual-return JSON, fix any failures
 
 **Checkpoint**: `python mcp_server.py` starts, 6 tools discoverable via MCP protocol. Each tool returns `{"data": {...}, "display": "...html..."}`.
 
