@@ -53,21 +53,21 @@
 
 > **Write tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T009 [P] [US1] Create `tests/test_tax_calculator.py` — test federal+state tax for all 4 filing statuses, standard deduction application, bracket boundary crossing, known scenarios from spec acceptance criteria (e.g., $150k MFJ + $50k conversion in CA)
-- [ ] T010 [P] [US1] Create `tests/test_irmaa.py` — test IRMAA surcharge for all 6 tiers × single + MFJ, boundary values ($103k, $129k, $206k, $258k, etc.), zero case (below threshold)
-- [ ] T011 [P] [US1] Create `tests/test_rmd.py` — test RMD for ages 73-90+ against Uniform Lifetime Table, zero case (age < 73), zero balance case
-- [ ] T012 [P] [US1] Create `tests/test_ss_taxation.py` — test SS taxation for all filing statuses, provisional income thresholds ($25k/$32k/$34k/$44k), married_separate special rule (85% taxable)
+- [X] T009 [P] [US1] Create `tests/test_tax_calculator.py` — test federal+state tax for all 4 filing statuses, standard deduction application, bracket boundary crossing, known scenarios from spec acceptance criteria (e.g., $150k MFJ + $50k conversion in CA)
+- [X] T010 [P] [US1] Create `tests/test_irmaa.py` — test IRMAA surcharge for all 6 tiers × single + MFJ, boundary values ($103k, $129k, $206k, $258k, etc.), zero case (below threshold)
+- [X] T011 [P] [US1] Create `tests/test_rmd.py` — test RMD for ages 73-90+ against Uniform Lifetime Table, zero case (age < 73), zero balance case
+- [X] T012 [P] [US1] Create `tests/test_ss_taxation.py` — test SS taxation for all filing statuses, provisional income thresholds ($25k/$32k/$34k/$44k), married_separate special rule (85% taxable)
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Implement `tax/brackets.py` — FEDERAL_BRACKETS dict (4 filing statuses × 7 brackets), STANDARD_DEDUCTIONS dict, additional deduction for age 65+, `compute_federal_tax(taxable_income, filing_status)` function
-- [ ] T014 [P] [US1] Implement `tax/state_rates.py` — STATE_TAX_RATES dict (50 states + DC with flat effective rates), `compute_state_tax(taxable_conversion, state)` function
-- [ ] T015 [P] [US1] Implement `tax/irmaa.py` — IRMAA_THRESHOLDS dict (6 tiers × single/MFJ), `compute_irmaa_surcharge(magi, filing_status)` returning annual surcharge
-- [ ] T016 [P] [US1] Implement `tax/rmd.py` — RMD_TABLE dict (ages 73-120), `compute_rmd(age, ira_balance)` returning distribution amount
-- [ ] T017 [P] [US1] Implement `tax/ss.py` — `compute_ss_taxation(ss_benefit, other_income, filing_status)` with provisional income formula for all 4 statuses
-- [ ] T018 [US1] Implement `tax/calculator.py` — `compute_tax_components()` main entry point (imports brackets, state_rates, irmaa, rmd, ss; applies standard deduction before brackets; returns full TaxEstimate dict), `compute_bracket_boundaries(annual_income, filing_status)` for optimizer
-- [ ] T019 [US1] Update `tax/__init__.py` — export compute_tax_components, compute_bracket_boundaries, compute_rmd, compute_irmaa_surcharge, compute_ss_taxation
-- [ ] T020 [US1] Run all US1 tests — verify all pass, fix any failures
+- [X] T013 [P] [US1] Implement `tax/brackets.py` — FEDERAL_BRACKETS dict (4 filing statuses × 7 brackets), STANDARD_DEDUCTIONS dict, additional deduction for age 65+, `compute_federal_tax(taxable_income, filing_status)` function
+- [X] T014 [P] [US1] Implement `tax/state_rates.py` — STATE_TAX_RATES dict (50 states + DC with flat effective rates), `compute_state_tax(taxable_conversion, state)` function
+- [X] T015 [P] [US1] Implement `tax/irmaa.py` — IRMAA_THRESHOLDS dict (6 tiers × single/MFJ), `compute_irmaa_surcharge(magi, filing_status)` returning annual surcharge
+- [X] T016 [P] [US1] Implement `tax/rmd.py` — RMD_TABLE dict (ages 73-120), `compute_rmd(age, ira_balance)` returning distribution amount
+- [X] T017 [P] [US1] Implement `tax/ss.py` — `compute_ss_taxation(ss_benefit, other_income, filing_status)` with provisional income formula for all 4 statuses
+- [X] T018 [US1] Implement `tax/calculator.py` — `compute_tax_components()` main entry point (imports brackets, state_rates, irmaa, rmd, ss; applies standard deduction before brackets; returns full TaxEstimate dict), `compute_bracket_boundaries(annual_income, filing_status)` for optimizer
+- [X] T019 [US1] Update `tax/__init__.py` — export compute_tax_components, compute_bracket_boundaries, compute_rmd, compute_irmaa_surcharge, compute_ss_taxation
+- [X] T020 [US1] Run all US1 tests — verify all pass, fix any failures
 
 **Checkpoint**: Tax engine fully functional. `compute_tax_components(150000, 50000, "married_joint", "CA")` returns correct federal+state+IRMAA+SS breakdown.
 
