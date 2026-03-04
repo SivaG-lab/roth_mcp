@@ -2,7 +2,7 @@
 
 **Feature Branch**: `roth-conversion-mcp-v2`
 **Created**: 2026-03-03
-**Status**: Draft
+**Status**: Clarified
 **Input**: PRD-roth-conversion-mcp-v2.md — Two-component system: FastMCP Server (6 tools) + Streamlit Chat Agent (MCP client with OpenAI GPT orchestration)
 
 ## User Scenarios & Testing *(mandatory)*
@@ -185,7 +185,7 @@ Full test suite: unit tests (80%, tax/IRMAA/RMD/SS/validators/dual-return/HTML/s
 ### Edge Cases
 
 - What happens when conversion_amount exceeds trad_ira_balance? → Validation error returned with clear message.
-- What happens when user provides both conversion_amount and conversion_schedule? → conversion_schedule takes precedence; conversion_amount ignored.
+- What happens when user provides both conversion_amount and conversion_schedule? → conversion_schedule takes precedence; conversion_amount is ignored. If only conversion_amount, it is auto-wrapped to conversion_schedule=[conversion_amount].
 - What happens when age < 18 or > 100? → Validation error.
 - What happens when state code is invalid (e.g., "XX")? → Validation error with "Invalid state code".
 - What happens when MCP server process crashes mid-pipeline? → ResilientToolExecutor restarts subprocess, retries (max 2).
