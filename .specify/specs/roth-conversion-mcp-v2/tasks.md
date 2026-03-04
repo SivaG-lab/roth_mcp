@@ -81,13 +81,13 @@
 
 ### Tests for User Story 2
 
-- [ ] T021 [P] [US2] Create `tests/test_validators.py` — test age range (18-100), retirement > current, income ≥ 0, filing_status enum, state code, conversion ≤ balance, annual_return range, model_years range, cross-field rules, auto-fill logic (SS=0 age<62, RMD=0 age<73, IRMAA=0 below threshold)
-- [ ] T022 [P] [US2] Create `tests/test_dual_return.py` — test dual_return() creates valid JSON, extract_html() returns HTML, extract_data() returns dict, compact_result() strips HTML, compact_result for report returns placeholder, compact_result for projections returns summary only
+- [X] T021 [P] [US2] Create `tests/test_validators.py` — test age range (18-100), retirement > current, income ≥ 0, filing_status enum, state code, conversion ≤ balance, annual_return range, model_years range, cross-field rules, auto-fill logic (SS=0 age<62, RMD=0 age<73, IRMAA=0 below threshold)
+- [X] T022 [P] [US2] Create `tests/test_dual_return.py` — test dual_return() creates valid JSON, extract_html() returns HTML, extract_data() returns dict, compact_result() strips HTML, compact_result for report returns placeholder, compact_result for projections returns summary only
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Implement `validators.py` — validate_inputs() with per-field range checks, enum checks, cross-field validation (conversion ≤ balance, retirement > current), auto-fill defaults (SS, RMD, IRMAA based on age/income), auto-wrap conversion_amount → conversion_schedule, return structured result {status, inputs, assumptions, auto_filled, missing, errors}
-- [ ] T024 [US2] Run all US2 tests — verify all pass, fix any failures
+- [X] T023 [US2] Implement `validators.py` — validate_inputs() with per-field range checks, enum checks, cross-field validation (conversion ≤ balance, retirement > current), auto-fill defaults (SS, RMD, IRMAA based on age/income), auto-wrap conversion_amount → conversion_schedule, return structured result {status, inputs, assumptions, auto_filled, missing, errors}
+- [X] T024 [US2] Run all US2 tests — verify all pass, fix any failures
 
 **Checkpoint**: `validate_inputs(current_age=55, ...)` returns complete validated result with auto-fills. `dual_return(html, data)` produces correct JSON envelope.
 
