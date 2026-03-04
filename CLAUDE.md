@@ -150,8 +150,8 @@ Run `/speckit.clarify` to resolve ambiguities in spec.md.
 **On completion:**
 - Update PROGRESS.md (Next Phase: plan)
 - Git commit
-- `/clear` **(MAJOR — paradigm shift to technical planning)**
-- Output resume message → user types "go" → resume
+- `/compact` (minor transition)
+- Proceed to plan
 
 ### 3. plan
 Read PROGRESS.md first. Run `/speckit.plan` using tech stack from spec.
@@ -183,8 +183,8 @@ Run `/speckit.analyze` for cross-artifact consistency check.
 **On completion:**
 - Update PROGRESS.md (Next Phase: implement)
 - Git commit
-- `/clear` **(MAJOR — paradigm shift to implementation)**
-- Output resume message → user types "go" → resume
+- `/compact` (minor transition)
+- Proceed to implement
 
 ### 6. implement
 Run `/speckit.implement`. This is the longest phase — follow implementation context rules below.
@@ -193,7 +193,7 @@ Run `/speckit.implement`. This is the longest phase — follow implementation co
 - Run final `/speckit.analyze` to verify completeness
 - Update PROGRESS.md (Current Phase: completed, Next Phase: DONE)
 - Git commit: `git add -A && git commit -m "feat: [feature-name] implementation complete"`
-
+- Git push
 ---
 
 ## Implementation Phase — Context Management (CRITICAL)
