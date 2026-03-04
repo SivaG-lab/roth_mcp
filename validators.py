@@ -111,7 +111,9 @@ def validate_inputs(**kwargs) -> dict:
         if isinstance(conversion_schedule, list) and not conversion_schedule:
             errors.append({"field": "conversion_schedule", "message": "Conversion schedule must not be empty"})
         elif isinstance(conversion_schedule, list) and all(isinstance(x, (int, float)) for x in conversion_schedule):
-            if any(x < 0 for x in conversion_schedule):
+            if len(conversion_schedule) > 50:
+                errors.append({"field": "conversion_schedule", "message": "Schedule must have ≤ 50 entries"})
+            elif any(x < 0 for x in conversion_schedule):
                 errors.append({"field": "conversion_schedule", "message": "Schedule amounts must be ≥ 0"})
             elif trad_ira_balance is not None and sum(conversion_schedule) > trad_ira_balance:
                 errors.append({"field": "conversion_schedule", "message": "Schedule total must be ≤ IRA balance"})

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 
 import nest_asyncio
 import streamlit as st
@@ -19,6 +20,8 @@ from models import (
 )
 from mcp_client import MCPConnection, discover_tools, ResilientToolExecutor
 from agent_loop import agent_loop
+
+logger = logging.getLogger(__name__)
 from dual_return import extract_html
 
 _APP_STATE_KEYS = {
@@ -228,7 +231,8 @@ def main():
                 status.update(label="Complete", state="complete")
             except Exception as e:
                 status.update(label="Error", state="error")
-                st.error(f"Error: {e}")
+                logger.error("Agent loop error: %s", e, exc_info=True)
+                st.error("An error occurred during analysis. Please try again.")
 
 
 if __name__ == "__main__":

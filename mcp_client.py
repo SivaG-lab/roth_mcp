@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import shlex
 from typing import Any
 
 from mcp import ClientSession, StdioServerParameters
@@ -28,7 +29,7 @@ class MCPConnection:
         """Create and return an MCP client session connected to the server."""
         server_params = StdioServerParameters(
             command=MCP_SERVER_CMD,
-            args=MCP_SERVER_ARGS.split(),
+            args=shlex.split(MCP_SERVER_ARGS),
         )
         self._stdio_cm = stdio_client(server_params)
         read, write = await self._stdio_cm.__aenter__()

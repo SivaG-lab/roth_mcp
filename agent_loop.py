@@ -10,7 +10,7 @@ from typing import Any
 
 from openai import AsyncOpenAI
 
-from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT
+from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT, MAX_SESSION_COST
 from dual_return import extract_data, extract_html, compact_result
 from schema_converter import mcp_tool_to_openai_function
 from pipeline import run_analysis_pipeline
@@ -32,41 +32,70 @@ def _load_system_prompt() -> str:
         )
 
 
+def _extract_numeric_values(data: Any) -> set[float]:
+    """Recursively extract all numeric values from nested dicts/lists."""
+    values = set()
+    if isinstance(data, (int, float)):
+        values.add(float(data))
+    elif isinstance(data, dict):
+        for v in data.values():
+            values.update(_extract_numeric_values(v))
+    elif isinstance(data, list):
+        for item in data:
+            values.update(_extract_numeric_values(item))
+    return values
+
+
 def check_hallucinated_numbers(
     gpt_response: str, tool_results: dict[str, dict]
 ) -> list[str]:
     """Check GPT response for dollar amounts, percentages, or breakeven years
-    that don't appear in any tool result."""
+    that don't appear in any tool result.
+
+    Uses numeric comparison instead of substring matching for accuracy.
+    """
     suspicious = []
 
+    # Extract all numeric values from tool results
+    tool_numbers = _extract_numeric_values(tool_results)
+    # Also add common derived values (percentages as decimals)
+    derived = set()
+    for n in tool_numbers:
+        if 0 < n < 1:
+            derived.add(round(n * 100, 2))  # 0.22 -> 22.0
+        if n > 0:
+            derived.add(round(n, 2))
+    tool_numbers.update(derived)
+
     # Extract numbers from GPT response
-    dollar_pattern = r"\$[\d,]+(?:\.\d{2})?"
+    dollar_pattern = r"\$([\d,]+(?:\.\d{1,2})?)"
     pct_pattern = r"(\d+(?:\.\d+)?)\s*%"
     year_pattern = r"(\d+)\s*years?\s*(?:to break|until)"
 
-    response_dollars = set(re.findall(dollar_pattern, gpt_response))
-    response_pcts = set(re.findall(pct_pattern, gpt_response))
-    response_years = set(re.findall(year_pattern, gpt_response))
+    for match in re.finditer(dollar_pattern, gpt_response):
+        raw = match.group(1).replace(",", "")
+        try:
+            val = float(raw)
+            if not any(abs(val - t) < 0.01 for t in tool_numbers):
+                suspicious.append(f"${match.group(1)}")
+        except ValueError:
+            pass
 
-    if not (response_dollars or response_pcts or response_years):
-        return []
+    for match in re.finditer(pct_pattern, gpt_response):
+        try:
+            val = float(match.group(1))
+            if not any(abs(val - t) < 0.1 for t in tool_numbers):
+                suspicious.append(f"{match.group(1)}%")
+        except ValueError:
+            pass
 
-    # Flatten all tool result values to strings for comparison
-    tool_text = json.dumps(tool_results)
-
-    for dollar in response_dollars:
-        # Normalize: remove $ and commas
-        normalized = dollar.replace("$", "").replace(",", "")
-        if normalized not in tool_text:
-            suspicious.append(dollar)
-
-    for pct in response_pcts:
-        if pct not in tool_text:
-            suspicious.append(f"{pct}%")
-
-    for year in response_years:
-        if year not in tool_text:
-            suspicious.append(f"{year} years")
+    for match in re.finditer(year_pattern, gpt_response):
+        try:
+            val = float(match.group(1))
+            if not any(abs(val - t) < 0.01 for t in tool_numbers):
+                suspicious.append(f"{match.group(1)} years")
+        except ValueError:
+            pass
 
     return suspicious
 
@@ -100,6 +129,11 @@ async def agent_loop(
     if not messages or messages[-1].get("content") != user_message:
         messages.append({"role": "user", "content": user_message})
 
+    # Trim conversation to keep system prompt + last N messages
+    max_messages = 40
+    if len(messages) > max_messages + 1:  # +1 for system prompt
+        messages[:] = [messages[0]] + messages[-(max_messages):]
+
     html_outputs: dict[str, str] = {}
     tool_data: dict[str, dict] = {}
     pipeline_result = None
@@ -107,6 +141,15 @@ async def agent_loop(
 
     for iteration in range(max_iterations):
         logger.debug("Agent loop iteration %d", iteration + 1)
+
+        # Enforce session cost limit
+        if token_tracker and token_tracker.estimated_cost >= MAX_SESSION_COST:
+            return (
+                f"Session cost limit (${MAX_SESSION_COST:.2f}) reached. "
+                "Please start a new session to continue.",
+                html_outputs,
+            )
+
         response = await client.chat.completions.create(
             model=OPENAI_MODEL,
             messages=messages,
@@ -118,6 +161,9 @@ async def agent_loop(
 
         if token_tracker:
             token_tracker.record(response)
+
+        if not response.choices:
+            return "No response from the model. Please try again.", html_outputs
 
         choice = response.choices[0]
         message = choice.message
