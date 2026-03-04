@@ -244,9 +244,9 @@
 
 - [X] T055 [P] Add structlog logging to `mcp_server.py` — log tool calls, execution time, errors
 - [X] T056 [P] Add structlog logging to `agent_loop.py` and `pipeline.py` — log GPT calls, token usage, pipeline stages
-- [ ] T057 Create `README.md` — project description, setup instructions, architecture overview, usage examples
-- [ ] T058 Run quickstart.md validation — follow quickstart steps on clean environment, verify everything works
-- [ ] T059 Final end-to-end test — start Streamlit, enter "I'm 55, MFJ, $150k income, $500k IRA, CA, convert $50k/yr for 5 years", verify full pipeline runs, report generates
+- [X] T057 Create `README.md` — project description, setup instructions, architecture overview, usage examples
+- [X] T058 Run quickstart.md validation — follow quickstart steps on clean environment, verify everything works
+- [X] T059 Final end-to-end test — start Streamlit, enter "I'm 55, MFJ, $150k income, $500k IRA, CA, convert $50k/yr for 5 years", verify full pipeline runs, report generates
 
 ---
 
