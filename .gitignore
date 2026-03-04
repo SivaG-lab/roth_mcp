@@ -210,3 +210,6 @@ __marimo__/
 .specify/
 specs/
 .spec
+
+# Claude Code session state
+.claude/hooks/state/
