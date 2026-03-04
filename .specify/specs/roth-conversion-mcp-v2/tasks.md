@@ -35,9 +35,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Implement `config.py` — load .env, validate OPENAI_API_KEY exists, export all config constants with types
-- [ ] T007 Implement `models.py` — all 8 dataclasses (UserProfile, ModelAssumptions, TaxEstimate, ProjectionData, OptimizationResult, BreakevenResult, CalculationResults, TokenTracker) + enums (FilingStatus, PipelinePhase, Assessment) per data-model.md
-- [ ] T008 Implement `dual_return.py` — dual_return(), extract_html(), extract_data(), compact_result() per contracts/mcp-tools.md envelope pattern
+- [X] T006 Implement `config.py` — load .env, validate OPENAI_API_KEY exists, export all config constants with types
+- [X] T007 Implement `models.py` — all 8 dataclasses (UserProfile, ModelAssumptions, TaxEstimate, ProjectionData, OptimizationResult, BreakevenResult, CalculationResults, TokenTracker) + enums (FilingStatus, PipelinePhase, Assessment) per data-model.md
+- [X] T008 Implement `dual_return.py` — dual_return(), extract_html(), extract_data(), compact_result() per contracts/mcp-tools.md envelope pattern
 
 **Checkpoint**: Foundation ready — models importable, dual-return works, config loads from .env
 
