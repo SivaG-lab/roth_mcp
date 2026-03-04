@@ -146,13 +146,13 @@
 
 ### Tests for User Story 5
 
-- [ ] T038 [P] [US5] Create `tests/test_schema_converter.py` — test mcp_tool_to_openai_function() produces valid OpenAI format, test list[float]|None → anyOf schema, test all 6 tool descriptions present in TOOL_DESCRIPTIONS
+- [X] T038 [P] [US5] Create `tests/test_schema_converter.py` — test mcp_tool_to_openai_function() produces valid OpenAI format, test list[float]|None → anyOf schema, test all 6 tool descriptions present in TOOL_DESCRIPTIONS
 
 ### Implementation for User Story 5
 
-- [ ] T039 [US5] Implement `schema_converter.py` — mcp_tool_to_openai_function(), TOOL_DESCRIPTIONS dict with enhanced descriptions for all 6 tools per contracts/openai-schema.md
-- [ ] T040 [US5] Implement `mcp_client.py` — get_mcp_session() with @st.cache_resource, StdioServerParameters(command, args from config), ClientSession init with nest_asyncio, tool discovery via session.list_tools(), ResilientToolExecutor class (max_retries=2, per-tool timeouts, subprocess restart on ConnectionError/BrokenPipeError)
-- [ ] T041 [US5] Run US5 tests — verify schema translation, fix any failures
+- [X] T039 [US5] Implement `schema_converter.py` — mcp_tool_to_openai_function(), TOOL_DESCRIPTIONS dict with enhanced descriptions for all 6 tools per contracts/openai-schema.md
+- [X] T040 [US5] Implement `mcp_client.py` — get_mcp_session() with @st.cache_resource, StdioServerParameters(command, args from config), ClientSession init with nest_asyncio, tool discovery via session.list_tools(), ResilientToolExecutor class (max_retries=2, per-tool timeouts, subprocess restart on ConnectionError/BrokenPipeError)
+- [X] T041 [US5] Run US5 tests — verify schema translation, fix any failures
 
 **Checkpoint**: MCP client connects to server subprocess, discovers 6 tools, translates schemas to OpenAI format. ResilientToolExecutor handles crashes.
 
@@ -166,9 +166,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T042 [US6] Implement `pipeline.py` — run_analysis_pipeline(mcp_session, validated_inputs): call estimate_tax_components (serial), then asyncio.gather(analyze_projections, optimize_schedule, breakeven) (3-way parallel), then generate_report (serial). Handle partial failures — if one parallel tool fails, report generates with available sections. Return dict with html_cards + compacted results.
-- [ ] T043 [US6] Implement `agent_loop.py` — agent_loop(user_message, mcp_session): build system message, discover tools as OpenAI functions, GPT conversation loop (max 10 iterations), handle tool_calls, call MCP tools via ResilientToolExecutor, update session state, trigger pipeline on validate_projection_inputs status=complete, return (assistant_content, html_outputs)
-- [ ] T044 [US6] Create `prompts/system.md` — full GPT system prompt per PRD Section 23: absolute rule (never compute financials), tool selection order, input collection instructions, auto-fill rules, conversion schedule parsing, boundaries, tone, disclaimer
+- [X] T042 [US6] Implement `pipeline.py` — run_analysis_pipeline(mcp_session, validated_inputs): call estimate_tax_components (serial), then asyncio.gather(analyze_projections, optimize_schedule, breakeven) (3-way parallel), then generate_report (serial). Handle partial failures — if one parallel tool fails, report generates with available sections. Return dict with html_cards + compacted results.
+- [X] T043 [US6] Implement `agent_loop.py` — agent_loop(user_message, mcp_session): build system message, discover tools as OpenAI functions, GPT conversation loop (max 10 iterations), handle tool_calls, call MCP tools via ResilientToolExecutor, update session state, trigger pipeline on validate_projection_inputs status=complete, return (assistant_content, html_outputs)
+- [X] T044 [US6] Create `prompts/system.md` — full GPT system prompt per PRD Section 23: absolute rule (never compute financials), tool selection order, input collection instructions, auto-fill rules, conversion schedule parsing, boundaries, tone, disclaimer
 
 **Checkpoint**: GPT agent collects inputs → validates → pipeline runs tax → (projection ∥ optimization ∥ breakeven) → report. Full flow works end-to-end.
 
@@ -182,9 +182,9 @@
 
 ### Implementation for User Story 7
 
-- [ ] T045 [US7] Implement `streamlit_app.py` — main app: initialize_session_state() (messages, profile, assumptions, results, html_cards, token_data, pipeline_phase), nest_asyncio.apply(), st.chat_input(), st.chat_message() loop, render HTML cards via st.html(), render final report via components.html() with scrolling, download button for report
-- [ ] T046 [US7] Add sidebar to `streamlit_app.py` — user profile section (live-updating from session state), model assumptions, calculation results summary, API usage (tokens, cost), model config display, "Start Over" button (resets session state)
-- [ ] T047 [US7] Wire agent_loop into `streamlit_app.py` — on user submit: call agent_loop(), display assistant response, render HTML cards inline during st.status progress, update sidebar
+- [X] T045 [US7] Implement `streamlit_app.py` — main app: initialize_session_state() (messages, profile, assumptions, results, html_cards, token_data, pipeline_phase), nest_asyncio.apply(), st.chat_input(), st.chat_message() loop, render HTML cards via st.html(), render final report via components.html() with scrolling, download button for report
+- [X] T046 [US7] Add sidebar to `streamlit_app.py` — user profile section (live-updating from session state), model assumptions, calculation results summary, API usage (tokens, cost), model config display, "Start Over" button (resets session state)
+- [X] T047 [US7] Wire agent_loop into `streamlit_app.py` — on user submit: call agent_loop(), display assistant response, render HTML cards inline during st.status progress, update sidebar
 
 **Checkpoint**: Full Streamlit chat UI working. User types message → GPT responds → HTML cards render → sidebar updates → report displays with download.
 
@@ -198,8 +198,8 @@
 
 ### Implementation for User Story 8
 
-- [ ] T048 [US8] Implement anti-hallucination guardrail in `agent_loop.py` — check_hallucinated_numbers(gpt_response, tool_results): regex for $amounts, percentages, breakeven years not in tool results. Append warning to response if suspicious numbers found.
-- [ ] T049 [US8] Create `tests/prompt_eval_cases.json` — 14 prompt regression test cases from PRD: "I want to convert my IRA" → validate, "I'm 55, MFJ..." → validate with params, "What tax on $50k?" → validate first, "$50k/year for 5 years" → conversion_schedule, "What's the best amount?" → optimize, etc.
+- [X] T048 [US8] Implement anti-hallucination guardrail in `agent_loop.py` — check_hallucinated_numbers(gpt_response, tool_results): regex for $amounts, percentages, breakeven years not in tool results. Append warning to response if suspicious numbers found.
+- [X] T049 [US8] Create `tests/prompt_eval_cases.json` — 14 prompt regression test cases from PRD: "I want to convert my IRA" → validate, "I'm 55, MFJ..." → validate with params, "What tax on $50k?" → validate first, "$50k/year for 5 years" → conversion_schedule, "What's the best amount?" → optimize, etc.
 
 **Checkpoint**: GPT routes to correct tools for all 14 test cases. Anti-hallucination catches fabricated numbers.
 
@@ -215,8 +215,8 @@
 
 ### Implementation for User Story 9
 
-- [ ] T050 [US9] Add UserProfile property tests to `tests/test_validators.py` or new `tests/test_models.py` — test missing_required returns correct fields, has_conversion_spec with amount/schedule/neither, to_tool_args() excludes None values
-- [ ] T051 [US9] Verify `config.py` handles missing OPENAI_API_KEY gracefully (error message), verify all config values have correct types and defaults
+- [X] T050 [US9] Add UserProfile property tests to `tests/test_validators.py` or new `tests/test_models.py` — test missing_required returns correct fields, has_conversion_spec with amount/schedule/neither, to_tool_args() excludes None values
+- [X] T051 [US9] Verify `config.py` handles missing OPENAI_API_KEY gracefully (error message), verify all config values have correct types and defaults
 
 **Checkpoint**: All dataclass properties work. Config loads with validation.
 

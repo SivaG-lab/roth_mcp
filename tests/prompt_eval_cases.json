@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "input": "I want to convert my IRA",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Generic intent, should trigger validation to collect inputs"
+  },
+  {
+    "id": 2,
+    "input": "I'm 55, married filing jointly, $150k income, $500k IRA balance, living in CA",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Provides most required inputs, still needs conversion amount"
+  },
+  {
+    "id": 3,
+    "input": "What would the tax be on a $50,000 conversion?",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Should validate inputs first before estimating tax"
+  },
+  {
+    "id": 4,
+    "input": "$50,000 per year for 5 years",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Conversion schedule input, should parse and validate"
+  },
+  {
+    "id": 5,
+    "input": "What's the best amount to convert?",
+    "expected_tool": "optimize_conversion_schedule",
+    "notes": "Optimization request, but may need validation first"
+  },
+  {
+    "id": 6,
+    "input": "How long until this pays for itself?",
+    "expected_tool": "breakeven_analysis",
+    "notes": "Breakeven request"
+  },
+  {
+    "id": 7,
+    "input": "Show me the full analysis report",
+    "expected_tool": "generate_conversion_report",
+    "notes": "Report generation request"
+  },
+  {
+    "id": 8,
+    "input": "I'm single, age 62, $80k income, $300k traditional IRA in Texas, convert $40k",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Complete inputs in one message"
+  },
+  {
+    "id": 9,
+    "input": "What if I convert $75,000 instead?",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Updated conversion amount, revalidate"
+  },
+  {
+    "id": 10,
+    "input": "Compare converting now vs waiting until retirement",
+    "expected_tool": "analyze_roth_projections",
+    "notes": "Projection comparison request"
+  },
+  {
+    "id": 11,
+    "input": "I'm head of household, age 45, retiring at 60, $200k income, $750k IRA, NJ",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Different filing status and state"
+  },
+  {
+    "id": 12,
+    "input": "Convert $100k this year, $80k next year, $60k the year after",
+    "expected_tool": "validate_projection_inputs",
+    "notes": "Multi-year descending schedule"
+  },
+  {
+    "id": 13,
+    "input": "What's my IRMAA impact?",
+    "expected_tool": "estimate_tax_components",
+    "notes": "Specific tax component question"
+  },
+  {
+    "id": 14,
+    "input": "Minimize my taxes over the conversion period",
+    "expected_tool": "optimize_conversion_schedule",
+    "notes": "Optimization with minimize_tax goal"
+  }
+]
