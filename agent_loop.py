@@ -18,6 +18,8 @@ from pipeline import run_analysis_pipeline
 logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT_PATH = Path(__file__).parent / "prompts" / "system.md"
+MAX_AGENT_ITERATIONS = 10
+MAX_CONVERSATION_MESSAGES = 40
 
 
 def _load_system_prompt() -> str:
@@ -130,16 +132,13 @@ async def agent_loop(
         messages.append({"role": "user", "content": user_message})
 
     # Trim conversation to keep system prompt + last N messages
-    max_messages = 40
-    if len(messages) > max_messages + 1:  # +1 for system prompt
-        messages[:] = [messages[0]] + messages[-(max_messages):]
+    if len(messages) > MAX_CONVERSATION_MESSAGES + 1:  # +1 for system prompt
+        messages[:] = [messages[0]] + messages[-(MAX_CONVERSATION_MESSAGES):]
 
     html_outputs: dict[str, str] = {}
     tool_data: dict[str, dict] = {}
     pipeline_result = None
-    max_iterations = 10
-
-    for iteration in range(max_iterations):
+    for iteration in range(MAX_AGENT_ITERATIONS):
         logger.debug("Agent loop iteration %d", iteration + 1)
 
         # Enforce session cost limit

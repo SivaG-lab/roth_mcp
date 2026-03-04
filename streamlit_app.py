@@ -10,7 +10,7 @@ import nest_asyncio
 import streamlit as st
 import streamlit.components.v1 as components
 
-from config import OPENAI_API_KEY, OPENAI_MODEL, MAX_SESSION_COST, validate_config
+from config import OPENAI_API_KEY, OPENAI_MODEL, MAX_SESSION_COST
 from models import (
     UserProfile,
     ModelAssumptions,

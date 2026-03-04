@@ -4,7 +4,7 @@ import pytest
 from models import (
     UserProfile, ModelAssumptions, TaxEstimate, ProjectionData,
     OptimizationResult, BreakevenResult, CalculationResults, TokenTracker,
-    FilingStatus, PipelinePhase, Assessment,
+    PipelinePhase,
 )
 
 
@@ -82,21 +82,10 @@ class TestTokenTracker:
 
 
 class TestEnums:
-    def test_filing_status_values(self):
-        assert FilingStatus.SINGLE.value == "single"
-        assert FilingStatus.MARRIED_JOINT.value == "married_joint"
-        assert FilingStatus.MARRIED_SEPARATE.value == "married_separate"
-        assert FilingStatus.HEAD_OF_HOUSEHOLD.value == "head_of_household"
-
     def test_pipeline_phase_values(self):
         assert PipelinePhase.COLLECTING.value == "collecting"
         assert PipelinePhase.ANALYZING.value == "analyzing"
         assert PipelinePhase.COMPLETE.value == "complete"
-
-    def test_assessment_values(self):
-        assert Assessment.WORTH_IT.value == "worth_it"
-        assert Assessment.MARGINAL.value == "marginal"
-        assert Assessment.NOT_WORTH_IT.value == "not_worth_it"
 
 
 class TestConfigValidation:

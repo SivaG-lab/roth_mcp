@@ -41,12 +41,14 @@ MCP_SERVER_CMD: str = os.getenv("MCP_SERVER_CMD", "python")
 MCP_SERVER_ARGS: str = os.getenv("MCP_SERVER_ARGS", "mcp_server.py")
 
 
+class ConfigError(RuntimeError):
+    """Raised when required configuration is missing."""
+
+
 def validate_config() -> None:
     """Validate that required configuration values are present."""
     if not OPENAI_API_KEY:
-        print(
-            "ERROR: OPENAI_API_KEY not set. "
-            "Copy .env.example to .env and add your API key.",
-            file=sys.stderr,
+        raise ConfigError(
+            "OPENAI_API_KEY not set. "
+            "Copy .env.example to .env and add your API key."
         )
-        sys.exit(1)

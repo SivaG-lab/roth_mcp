@@ -11,6 +11,8 @@ from fastmcp import FastMCP
 
 logger = logging.getLogger(__name__)
 
+BREAKEVEN_MAX_YEARS = 50
+
 from dual_return import dual_return
 from validators import validate_inputs
 from tax.calculator import compute_tax_components, compute_bracket_boundaries
@@ -348,14 +350,14 @@ def breakeven_analysis(
     trad_start = conversion_amount
 
     breakeven_years = 0
-    for year in range(1, 51):
+    for year in range(1, BREAKEVEN_MAX_YEARS + 1):
         roth_value = roth_start * ((1 + annual_return) ** year)
         trad_after_tax = trad_start * ((1 + annual_return) ** year) * (1 - future_tax_rate)
         if roth_value >= trad_after_tax:
             breakeven_years = year
             break
     else:
-        breakeven_years = 50  # never breaks even within 50 years
+        breakeven_years = BREAKEVEN_MAX_YEARS
 
     breakeven_age = current_age + breakeven_years
 
@@ -399,6 +401,7 @@ def generate_conversion_report(
             parsed = json.loads(s)
             return parsed.get("data", parsed) if isinstance(parsed, dict) else {}
         except (json.JSONDecodeError, TypeError):
+            logger.warning("_safe_parse: failed to parse: %s", s[:200] if s else s)
             return {}
 
     inputs_data = _safe_parse(validated_inputs) if validated_inputs else {}

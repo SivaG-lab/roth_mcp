@@ -112,10 +112,10 @@ async def run_analysis_pipeline(
     # Stage 3: Generate report (serial)
     report_args = {
         "validated_inputs": json.dumps(validated_inputs),
-        "tax_analysis": tax_result if tax_result else "",
-        "projection_data": html_cards.get("analyze_roth_projections", ""),
-        "optimization_data": html_cards.get("optimize_conversion_schedule", ""),
-        "breakeven_data": html_cards.get("breakeven_analysis", ""),
+        "tax_analysis": json.dumps(tax_data) if tax_data else "",
+        "projection_data": json.dumps(extract_data(html_cards.get("analyze_roth_projections", "{}"))) if html_cards.get("analyze_roth_projections") else "",
+        "optimization_data": json.dumps(extract_data(html_cards.get("optimize_conversion_schedule", "{}"))) if html_cards.get("optimize_conversion_schedule") else "",
+        "breakeven_data": json.dumps(extract_data(html_cards.get("breakeven_analysis", "{}"))) if html_cards.get("breakeven_analysis") else "",
     }
 
     try:

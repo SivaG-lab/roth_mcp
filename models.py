@@ -2,36 +2,16 @@
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
-
-
-class FilingStatus(str, Enum):
-    SINGLE = "single"
-    MARRIED_JOINT = "married_joint"
-    MARRIED_SEPARATE = "married_separate"
-    HEAD_OF_HOUSEHOLD = "head_of_household"
-
-
-class AutoFillSource(str, Enum):
-    USER_PROVIDED = "user_provided"
-    AUTO_CALCULATED = "auto_calculated"
-    AGE_BASED_DEFAULT = "age_based_default"
-    SYSTEM_DEFAULT = "system_default"
-    USER_IMPLICIT = "user_implicit"
+from typing import ClassVar, Optional
 
 
 class PipelinePhase(str, Enum):
     COLLECTING = "collecting"
     ANALYZING = "analyzing"
     COMPLETE = "complete"
-
-
-class Assessment(str, Enum):
-    WORTH_IT = "worth_it"
-    MARGINAL = "marginal"
-    NOT_WORTH_IT = "not_worth_it"
 
 
 @dataclass
@@ -47,29 +27,20 @@ class UserProfile:
     conversion_amount: Optional[float] = None
     conversion_schedule: Optional[list[float]] = None
     roth_ira_balance_initial: float = 0.0
-    taxable_dollars_available: float = 0.0
     cost_basis: float = 0.0
     annual_return: float = 0.07
-    taxable_account_annual_return: float = 0.07
     model_years: int = 30
     social_security: float = 0.0
     rmd: float = 0.0
-    irmaa: float = 0.0
-    other_ordinary_income_by_year: Optional[list[float]] = None
-    spending_need_after_tax_by_year: Optional[list[float]] = None
 
-    REQUIRED_FIELDS: list[str] = field(
-        default_factory=lambda: [
-            "current_age",
-            "retirement_age",
-            "filing_status",
-            "state",
-            "annual_income",
-            "trad_ira_balance",
-        ],
-        repr=False,
-        compare=False,
-    )
+    REQUIRED_FIELDS: ClassVar[list[str]] = [
+        "current_age",
+        "retirement_age",
+        "filing_status",
+        "state",
+        "annual_income",
+        "trad_ira_balance",
+    ]
 
     @property
     def missing_required(self) -> list[str]:
@@ -82,12 +53,10 @@ class UserProfile:
     def to_tool_args(self) -> dict:
         """Return dict with only non-None values (for MCP tool calls)."""
         result = {}
-        for fld in self.__dataclass_fields__:
-            if fld == "REQUIRED_FIELDS":
-                continue
-            val = getattr(self, fld)
+        for fld in dataclasses.fields(self):
+            val = getattr(self, fld.name)
             if val is not None:
-                result[fld] = val
+                result[fld.name] = val
         return result
 
 

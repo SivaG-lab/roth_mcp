@@ -4,6 +4,16 @@ from __future__ import annotations
 
 from typing import Any
 
+TOOL_REQUIRED_PARAMS: dict[str, list[str]] = {
+    "estimate_tax_components": ["annual_income", "conversion_amount", "filing_status", "state"],
+    "analyze_roth_projections": ["trad_ira_balance", "current_age"],
+    "optimize_conversion_schedule": [
+        "trad_ira_balance", "annual_income", "filing_status", "state",
+        "current_age", "retirement_age",
+    ],
+    "breakeven_analysis": ["conversion_amount", "current_age"],
+}
+
 TOOL_DESCRIPTIONS = {
     "validate_projection_inputs": (
         "Validate and prepare all user financial inputs for Roth conversion analysis. "
@@ -34,11 +44,21 @@ TOOL_DESCRIPTIONS = {
 
 def mcp_tool_to_openai_function(mcp_tool: Any) -> dict:
     """Translate an MCP tool definition to OpenAI function calling format."""
+    schema = dict(mcp_tool.inputSchema or {"type": "object", "properties": {}})
+
+    # Inject required params if defined
+    required = TOOL_REQUIRED_PARAMS.get(mcp_tool.name)
+    if required:
+        schema["required"] = required
+
+    # Use MCP description as fallback if no custom description
+    description = TOOL_DESCRIPTIONS.get(mcp_tool.name) or mcp_tool.description or ""
+
     return {
         "type": "function",
         "function": {
             "name": mcp_tool.name,
-            "description": TOOL_DESCRIPTIONS.get(mcp_tool.name, mcp_tool.description or ""),
-            "parameters": mcp_tool.inputSchema or {"type": "object", "properties": {}},
+            "description": description,
+            "parameters": schema,
         },
     }
