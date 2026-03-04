@@ -50,7 +50,7 @@ class TestFormatValidationResult:
                   "auto_filled": {"rmd": {"value": 0, "reason": "Age < 73"}},
                   "missing": [], "errors": []}
         html = format_validation_result(result)
-        assert "Age < 73" in html
+        assert "Age &lt; 73" in html
 
 
 # ---------------------------------------------------------------------------

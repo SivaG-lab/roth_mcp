@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 from config import OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT
 from dual_return import extract_data, extract_html, compact_result
@@ -90,14 +90,15 @@ async def agent_loop(
     Returns:
         (assistant_text, html_outputs) tuple
     """
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
     # Add system prompt if not present
     if not messages or messages[0].get("role") != "system":
         messages.insert(0, {"role": "system", "content": _load_system_prompt()})
 
-    # Add user message
-    messages.append({"role": "user", "content": user_message})
+    # Ensure user message is in history (caller should have added it)
+    if not messages or messages[-1].get("content") != user_message:
+        messages.append({"role": "user", "content": user_message})
 
     html_outputs: dict[str, str] = {}
     tool_data: dict[str, dict] = {}
@@ -106,7 +107,7 @@ async def agent_loop(
 
     for iteration in range(max_iterations):
         logger.debug("Agent loop iteration %d", iteration + 1)
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=OPENAI_MODEL,
             messages=messages,
             tools=openai_tools if openai_tools else None,

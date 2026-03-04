@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import html as _html
+
 from html_templates.styles import (
     VALIDATION_GREEN, TAX_RED, PROJECTION_BLUE, OPTIMIZATION_PURPLE,
     BREAKEVEN_BLUE, card_style, heading_style,
@@ -23,12 +25,12 @@ def _validation_complete(result: dict) -> str:
     inputs = result.get("inputs", {})
     auto = result.get("auto_filled", {})
     rows = "".join(
-        f"<tr><td style='{TD_STYLE}'>{k}</td><td style='{TD_RIGHT}'>{_fmt_val(v)}</td></tr>"
+        f"<tr><td style='{TD_STYLE}'>{_html.escape(str(k))}</td><td style='{TD_RIGHT}'>{_html.escape(_fmt_val(v))}</td></tr>"
         for k, v in inputs.items()
     )
     auto_rows = "".join(
-        f"<tr><td style='{TD_STYLE}'>{k}</td>"
-        f"<td style='{TD_RIGHT}'>{v['value']} ({v['reason']})</td></tr>"
+        f"<tr><td style='{TD_STYLE}'>{_html.escape(str(k))}</td>"
+        f"<td style='{TD_RIGHT}'>{_html.escape(str(v['value']))} ({_html.escape(str(v['reason']))})</td></tr>"
         for k, v in auto.items()
     )
     return (
@@ -42,7 +44,7 @@ def _validation_complete(result: dict) -> str:
 
 
 def _validation_incomplete(result: dict) -> str:
-    missing = ", ".join(result.get("missing", []))
+    missing = ", ".join(_html.escape(str(m)) for m in result.get("missing", []))
     return (
         f"<div style='{card_style('#f59e0b')}'>"
         f"<h3 style='{heading_style('#f59e0b')}'>&#9888; Incomplete Inputs</h3>"
@@ -52,7 +54,7 @@ def _validation_incomplete(result: dict) -> str:
 
 def _validation_error(result: dict) -> str:
     errs = "".join(
-        f"<li>{e['field']}: {e['message']}</li>" for e in result.get("errors", [])
+        f"<li>{_html.escape(str(e['field']))}: {_html.escape(str(e['message']))}</li>" for e in result.get("errors", [])
     )
     return (
         f"<div style='{card_style(TAX_RED)}'>"
@@ -77,7 +79,7 @@ def format_tax_estimate(result: dict) -> str:
         f"<td style='{TD_RIGHT}'>${result.get('total_tax_cost', 0):,.2f}</td></tr>"
         f"</table>"
         f"<p style='{MUTED}'>Effective rate: {result.get('effective_rate', 0):.1%} | "
-        f"Bracket: {result.get('bracket_before', '')} &rarr; {result.get('bracket_after', '')}</p></div>"
+        f"Bracket: {_html.escape(str(result.get('bracket_before', '')))} &rarr; {_html.escape(str(result.get('bracket_after', '')))}</p></div>"
     )
 
 
@@ -148,7 +150,7 @@ def format_breakeven(data: dict) -> str:
     color_map = {"worth_it": "#22c55e", "marginal": "#f59e0b", "not_worth_it": "#ef4444"}
     label_map = {"worth_it": "Worth It", "marginal": "Marginal", "not_worth_it": "Not Worth It"}
     assess_color = color_map.get(assessment, "#999")
-    assess_label = label_map.get(assessment, assessment)
+    assess_label = label_map.get(assessment, _html.escape(str(assessment)))
 
     return (
         f"<div style='{card_style(BREAKEVEN_BLUE)}'>"
@@ -178,7 +180,7 @@ def format_report(
     if inputs_data:
         user_inputs = inputs_data.get("inputs", inputs_data)
         rows = "".join(
-            f"<tr><td style='{TD_STYLE}'>{k}</td><td style='{TD_RIGHT}'>{v}</td></tr>"
+            f"<tr><td style='{TD_STYLE}'>{_html.escape(str(k))}</td><td style='{TD_RIGHT}'>{_html.escape(str(v))}</td></tr>"
             for k, v in user_inputs.items()
         )
         parts.append(f"<h2>Input Summary</h2><table style='{TABLE_STYLE}'>{rows}</table>")

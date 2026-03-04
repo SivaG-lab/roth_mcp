@@ -17,11 +17,15 @@ from models import (
     TokenTracker,
     PipelinePhase,
 )
-from mcp_client import create_mcp_session, discover_tools, ResilientToolExecutor
+from mcp_client import MCPConnection, discover_tools, ResilientToolExecutor
 from agent_loop import agent_loop
 from dual_return import extract_html
 
-nest_asyncio.apply()
+_APP_STATE_KEYS = {
+    "messages", "profile", "assumptions", "results",
+    "html_cards", "token_data", "pipeline_phase",
+    "mcp_session", "openai_tools", "executor",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -56,12 +60,19 @@ def get_mcp_resources():
     """Initialize MCP session and tool definitions (cached across reruns)."""
     loop = asyncio.new_event_loop()
     try:
-        session = loop.run_until_complete(create_mcp_session())
+        conn = MCPConnection()
+        session = loop.run_until_complete(conn.connect())
         tools = loop.run_until_complete(discover_tools(session))
-        executor = ResilientToolExecutor(session)
-        return session, tools, executor, loop
-    except Exception as e:
-        return None, [], None, loop
+
+        async def session_factory():
+            """Reconnect factory for ResilientToolExecutor."""
+            await conn.close()
+            return await conn.connect()
+
+        executor = ResilientToolExecutor(session, session_factory=session_factory)
+        return session, tools, executor, loop, conn
+    except Exception:
+        return None, [], None, loop, None
 
 
 # ---------------------------------------------------------------------------
@@ -115,7 +126,9 @@ def render_sidebar():
         # Start Over
         if st.button("Start Over", type="secondary"):
             for key in list(st.session_state.keys()):
-                del st.session_state[key]
+                if key in _APP_STATE_KEYS:
+                    del st.session_state[key]
+            get_mcp_resources.clear()
             st.rerun()
 
 
@@ -124,6 +137,7 @@ def render_sidebar():
 # ---------------------------------------------------------------------------
 
 def main():
+    nest_asyncio.apply()
     st.set_page_config(
         page_title="Roth Conversion Calculator",
         page_icon="💰",
@@ -171,7 +185,7 @@ def main():
             return
 
         # Get MCP resources
-        session, tools, executor, loop = get_mcp_resources()
+        session, tools, executor, loop, _conn = get_mcp_resources()
         if session is None:
             st.error("Failed to connect to MCP server. Check that mcp_server.py is available.")
             return

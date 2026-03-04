@@ -327,6 +327,12 @@ def breakeven_analysis(
             {"error": "Missing required inputs"},
         )
 
+    if conversion_amount <= 0:
+        return dual_return(
+            "<div style='color:#999'>No conversion to analyze</div>",
+            {"breakeven_years": 0, "breakeven_age": current_age, "assessment": "no_conversion"},
+        )
+
     # Compute total tax cost if not provided directly
     if total_tax_cost is None:
         total_tax_cost = (federal_tax or 0) + (state_tax or 0)
