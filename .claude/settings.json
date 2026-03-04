@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/skill-activation-prompt.py",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

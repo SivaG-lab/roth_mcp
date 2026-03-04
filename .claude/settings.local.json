@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(pip freeze:*)",
+      "Bash(where:*)",
+      "WebSearch",
+      "WebFetch(domain:platform.openai.com)",
+      "Bash(tesseract:*)",
+      "Bash(cd:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(perl -e:*)",
+      "Bash(ruby:*)",
+      "WebFetch(domain:landing.ai)",
+      "WebFetch(domain:www.sensible.so)",
+      "WebFetch(domain:reducto.ai)",
+      "WebFetch(domain:www.docugami.com)",
+      "Bash(curl:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(wc:*)",
+      "Bash(pip show:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git log:*)",
+      "Bash(git restore:*)",
+      "Bash(git merge:*)",
+      "Bash(comm:*)",
+      "Bash(git rebase:*)",
+      "Bash(git branch:*)"
+    ]
+  }
+}

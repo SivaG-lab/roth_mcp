@@ -1,0 +1,1239 @@
+{
+  "version": "1.0",
+  "skills": {
+    "prism-ade": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "critical",
+      "promptTriggers": {
+        "keywords": ["prism", "extraction", "document extraction", "agentic", "ade", "pipeline", "structured outputs", "grounding", "anti-hallucination"],
+        "intentPatterns": ["(extract|parse|ingest).*?(document|pdf|image)", "(schema|json).*?(generat|suggest)", "(ground|validate|confidence).*?(field|value)", "prism.*?(agent|pipeline|api)"]
+      },
+      "fileTriggers": {
+        "paths": ["prism/**/*.py"],
+        "contentPatterns": ["DocumentState", "create_extraction_app", "grounding_agent", "validator_agent"]
+      }
+    },
+
+    "langgraph": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["langgraph", "state graph", "stateful agent", "agent graph", "react agent", "langchain agent", "conditional edge"],
+        "intentPatterns": ["(build|create|design).*?(graph|agent|pipeline)", "(state|node|edge).*?(graph|flow)", "langgraph"]
+      },
+      "fileTriggers": {
+        "paths": ["**/*graph*.py", "**/*orchestrat*.py"],
+        "contentPatterns": ["StateGraph", "add_node", "add_edge", "add_conditional_edges"]
+      }
+    },
+
+    "langchain-architecture": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["langchain", "chain", "retriever", "llm chain", "agent executor", "langchain memory"],
+        "intentPatterns": ["langchain.*?(architect|design|build)", "(chain|retriev|agent).*?langchain"]
+      }
+    },
+
+    "ai-engineer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["llm application", "rag", "retrieval augmented", "embedding", "vector search", "ai system", "llm production", "prompt engineering"],
+        "intentPatterns": ["(build|design|implement).*?(llm|ai|rag|agent).*?(app|system|pipeline)", "(production|deploy).*?(llm|ai|model)"]
+      }
+    },
+
+    "ai-agents-architect": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["ai agent", "autonomous agent", "tool use", "function calling", "agent design", "agent architecture", "memory system"],
+        "intentPatterns": ["(design|build|architect).*?(ai|autonomous).*?agent", "(tool|function).*?(use|call).*?agent"]
+      }
+    },
+
+    "agent-orchestration-improve-agent": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["improve agent", "agent performance", "optimize agent", "prompt engineering", "agent iteration"],
+        "intentPatterns": ["(improve|optimize|tune|refine).*?agent", "agent.*?(performance|quality|accuracy)"]
+      }
+    },
+
+    "agent-orchestration-multi-agent-optimize": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["multi-agent optimize", "agent coordination", "workload distribution", "agent cost", "agent throughput"],
+        "intentPatterns": ["(optimize|improve).*?multi.?agent", "agent.*?(cost|throughput|latency)"]
+      }
+    },
+
+    "autonomous-agent-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["autonomous agent", "coding agent", "tool integration", "permission system", "browser automation", "human in the loop"],
+        "intentPatterns": ["(autonomous|coding).*?agent.*?(pattern|design)", "(tool|browser|permission).*?agent"]
+      }
+    },
+
+    "multi-agent-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["multi-agent", "orchestrator pattern", "supervisor agent", "swarm", "peer to peer agent", "hierarchical agent", "agent coordination"],
+        "intentPatterns": ["multi.?agent.*?(pattern|architect|design)", "(orchestrat|supervis|coordinat).*?agent"]
+      }
+    },
+
+    "multi-agent-brainstorming": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["multi-agent brainstorm", "design review", "agent review", "collaborative brainstorm"],
+        "intentPatterns": ["multi.?agent.*?brainstorm", "(design|architect).*?review.*?agent"]
+      }
+    },
+
+    "parallel-agents": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["parallel agent", "concurrent agent", "parallel execution", "multi-perspective"],
+        "intentPatterns": ["parallel.*?agent", "(concurrent|simultaneous).*?(agent|task)"]
+      }
+    },
+
+    "dispatching-parallel-agents": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["dispatch agent", "parallel task", "independent task", "concurrent work"],
+        "intentPatterns": ["dispatch.*?(agent|task)", "(parallel|independent).*?task"]
+      }
+    },
+
+    "prompt-engineering-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["prompt engineering", "few-shot", "chain of thought", "system prompt", "prompt template", "prompt optimization"],
+        "intentPatterns": ["(design|optimize|improve|write).*?prompt", "(few.?shot|chain.?of.?thought|cot)"]
+      }
+    },
+
+    "llm-app-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["llm pattern", "rag pipeline", "llm observability", "llmops", "ai application pattern"],
+        "intentPatterns": ["llm.*?(pattern|design|architect)", "(rag|retrieval).*?(pipeline|pattern)"]
+      }
+    },
+
+    "llm-application-dev-ai-assistant": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["ai assistant", "chatbot", "conversational ai", "virtual assistant"],
+        "intentPatterns": ["(build|create|design).*?(ai|virtual).*?assistant", "(chatbot|conversational).*?(build|design)"]
+      }
+    },
+
+    "llm-application-dev-langchain-agent": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["langchain agent", "langchain development", "agent developer"],
+        "intentPatterns": ["langchain.*?agent.*?(develop|build)", "(build|create).*?langchain.*?agent"]
+      }
+    },
+
+    "python-pro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["python", "async await", "type hints", "dataclass", "pattern matching", "python 3.12", "python best practice"],
+        "intentPatterns": ["python.*?(best practice|pattern|modern|advanced)", "(async|concurr|parallel).*?python"]
+      },
+      "fileTriggers": {
+        "paths": ["**/*.py"],
+        "contentPatterns": ["async def", "match.*?case", "from __future__"]
+      }
+    },
+
+    "python-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["python pattern", "design pattern python", "python idiom", "pythonic"],
+        "intentPatterns": ["python.*?(design|creational|structural|behavioral).*?pattern", "pythonic.*?(way|approach)"]
+      }
+    },
+
+    "python-packaging": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["python packaging", "pyproject.toml", "setup.py", "wheel", "sdist", "pip publish", "pypi"],
+        "intentPatterns": ["(package|publish|distribut).*?python", "pyproject\\.toml"]
+      },
+      "fileTriggers": {
+        "paths": ["pyproject.toml", "setup.py", "setup.cfg", "MANIFEST.in"]
+      }
+    },
+
+    "python-development-python-scaffold": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["python scaffold", "python project structure", "python boilerplate", "python template"],
+        "intentPatterns": ["(scaffold|bootstrap|init|start).*?python.*?project", "python.*?project.*?(structure|template)"]
+      }
+    },
+
+    "python-testing-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["pytest", "python test", "test fixture", "mock", "parametrize", "hypothesis", "property test"],
+        "intentPatterns": ["(write|create|add).*?(test|spec).*?python", "pytest.*?(pattern|fixture|conftest)"]
+      },
+      "fileTriggers": {
+        "paths": ["**/test_*.py", "**/tests/**/*.py", "conftest.py"]
+      }
+    },
+
+    "async-python-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["async python", "asyncio", "aiohttp", "async await python", "event loop", "coroutine"],
+        "intentPatterns": ["async.*?python.*?(pattern|practice)", "(asyncio|aiohttp|coroutine)"]
+      }
+    },
+
+    "pydantic-models-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["pydantic", "pydantic model", "base model", "field validator", "model validator", "data validation"],
+        "intentPatterns": ["(create|define|design).*?pydantic.*?model", "pydantic.*?(v2|validator|schema)"]
+      },
+      "fileTriggers": {
+        "contentPatterns": ["BaseModel", "from pydantic"]
+      }
+    },
+
+    "uv-package-manager": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["uv", "uv package", "uv pip", "uv venv", "uv sync", "uv run"],
+        "intentPatterns": ["uv.*?(install|add|sync|run|venv)", "(use|switch|setup).*?uv"]
+      }
+    },
+
+    "fastapi-pro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["fastapi", "api endpoint", "async api", "uvicorn", "api router", "dependency injection fastapi"],
+        "intentPatterns": ["fastapi.*?(endpoint|router|middleware|websocket)", "(create|add|build).*?(api|endpoint).*?fastapi"]
+      },
+      "fileTriggers": {
+        "paths": ["**/api/**/*.py", "**/app.py"],
+        "contentPatterns": ["from fastapi", "FastAPI()", "APIRouter"]
+      }
+    },
+
+    "fastapi-router-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["fastapi router", "api router", "route handler", "endpoint handler"],
+        "intentPatterns": ["fastapi.*?router", "(add|create).*?route"]
+      }
+    },
+
+    "fastapi-templates": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["fastapi template", "fastapi boilerplate", "fastapi starter"],
+        "intentPatterns": ["fastapi.*?(template|boilerplate|starter|scaffold)"]
+      }
+    },
+
+    "api-design-principles": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["api design", "rest api", "graphql", "api versioning", "api pagination", "openapi", "swagger"],
+        "intentPatterns": ["(design|architect).*?api", "(rest|graphql|grpc).*?(design|best practice)"]
+      }
+    },
+
+    "api-security-best-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["api security", "oauth", "jwt", "api key", "rate limiting", "cors", "api authentication"],
+        "intentPatterns": ["(secure|protect|harden).*?api", "api.*?(auth|security|rate.?limit)"]
+      }
+    },
+
+    "api-fuzzing-bug-bounty": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["api fuzzing", "fuzz testing", "bug bounty", "api pentest"],
+        "intentPatterns": ["(fuzz|pentest).*?api", "bug.*?bounty"]
+      }
+    },
+
+    "file-uploads": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["file upload", "multipart upload", "s3 upload", "presigned url", "cloud storage"],
+        "intentPatterns": ["(upload|store).*?file", "(s3|r2|presigned|multipart).*?upload"]
+      }
+    },
+
+    "architecture": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["architecture decision", "adr", "system design", "trade-off analysis", "architecture pattern"],
+        "intentPatterns": ["(architecture|system).*?(decision|design|review)", "(adr|trade.?off).*?(document|analyz)"]
+      }
+    },
+
+    "architecture-decision-records": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["adr", "architecture decision record", "decision log", "technical decision"],
+        "intentPatterns": ["(create|write|document).*?adr", "architecture.*?decision.*?record"]
+      }
+    },
+
+    "architecture-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["architecture pattern", "microservice pattern", "event driven", "hexagonal", "clean architecture"],
+        "intentPatterns": ["(select|choose|compare).*?architecture.*?pattern", "(microservice|event.?driven|hexagonal|clean).*?architecture"]
+      }
+    },
+
+    "backend-architect": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["backend architecture", "service boundary", "distributed system", "inter-service communication"],
+        "intentPatterns": ["(design|architect).*?backend", "backend.*?(scalab|resilien|distribut)"]
+      }
+    },
+
+    "senior-architect": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["senior architect", "system design", "architecture review", "tech decision", "dependency analysis"],
+        "intentPatterns": ["(system|software).*?design.*?(review|guide)", "tech.*?decision.*?(guide|framework)"]
+      }
+    },
+
+    "software-architecture": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["software architecture", "layered architecture", "modular design", "separation of concerns"],
+        "intentPatterns": ["software.*?architect", "(modular|layer|component).*?(design|architect)"]
+      }
+    },
+
+    "architect-review": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["architecture review", "code review architect", "design review", "scalability review", "ddd"],
+        "intentPatterns": ["(review|assess|evaluat).*?(architect|design|scalab)", "(domain.?driven|ddd|cqrs|event.?sourc)"]
+      }
+    },
+
+    "clean-code": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["clean code", "code quality", "solid principles", "refactor", "code smell", "naming convention"],
+        "intentPatterns": ["clean.*?code", "(refactor|improve).*?(code|readab|maintainab)", "code.*?(smell|quality)"]
+      }
+    },
+
+    "commit": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["commit message", "git commit", "conventional commit", "commit convention"],
+        "intentPatterns": ["(write|create|format).*?commit.*?message", "commit.*?(convention|format|style)"]
+      }
+    },
+
+    "debugging-strategies": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["debug", "debugging", "bug fix", "troubleshoot", "root cause", "stack trace", "breakpoint"],
+        "intentPatterns": ["(debug|troubleshoot|diagnos).*?(bug|issue|error|problem)", "(find|trace|identify).*?(root cause|bug|issue)"]
+      }
+    },
+
+    "error-debugging-error-analysis": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["error analysis", "error pattern", "exception analysis", "error classification"],
+        "intentPatterns": ["(analyz|classif|categoriz).*?error", "error.*?(pattern|trend|analysis)"]
+      }
+    },
+
+    "error-debugging-multi-agent-review": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["multi-agent error review", "collaborative debugging", "agent error analysis"],
+        "intentPatterns": ["multi.?agent.*?(debug|error|review)"]
+      }
+    },
+
+    "error-handling-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["error handling", "exception handling", "retry pattern", "circuit breaker", "graceful degradation", "result type"],
+        "intentPatterns": ["(error|exception).*?(handl|pattern|strateg)", "(retry|circuit.?breaker|fallback).*?pattern"]
+      }
+    },
+
+    "test-automator": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["test automation", "tdd", "bdd", "playwright", "selenium", "test framework", "ci test"],
+        "intentPatterns": ["(automat|generat).*?test", "(tdd|bdd|test.?driven)"]
+      }
+    },
+
+    "testing-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["testing pattern", "test pyramid", "integration test", "test strategy", "test design"],
+        "intentPatterns": ["test.*?(pattern|strateg|pyramid|design)", "(integration|e2e|unit).*?test.*?pattern"]
+      }
+    },
+
+    "unit-testing-test-generate": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["unit test", "generate test", "test generation", "test coverage"],
+        "intentPatterns": ["(generate|create|write).*?unit.*?test", "test.*?(generat|coverage)"]
+      }
+    },
+
+    "security-scanning-security-sast": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["sast", "static analysis", "code security", "bandit", "semgrep", "sonarqube", "codeql"],
+        "intentPatterns": ["(static|sast).*?(analysis|scan|security)", "(bandit|semgrep|sonarqube)"]
+      }
+    },
+
+    "security-scanning-security-dependencies": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["dependency scan", "vulnerability scan", "npm audit", "pip audit", "supply chain security", "cve"],
+        "intentPatterns": ["(scan|audit|check).*?dependenc", "(supply.?chain|cve|vulnerability).*?(scan|check)"]
+      }
+    },
+
+    "security-scanning-security-hardening": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["security hardening", "server hardening", "infrastructure security", "security baseline"],
+        "intentPatterns": ["(harden|secure|lock.?down).*?(server|infra|system)", "security.*?(hardening|baseline)"]
+      }
+    },
+
+    "security-compliance-compliance-check": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["compliance check", "soc2", "pci dss", "hipaa", "gdpr", "security compliance"],
+        "intentPatterns": ["(compliance|audit).*?(check|verify|assess)", "(soc2|pci|hipaa|gdpr).*?(compliance|check)"]
+      }
+    },
+
+    "security-bluebook-builder": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["security bluebook", "security document", "security runbook"],
+        "intentPatterns": ["(build|create|write).*?security.*?(bluebook|runbook)"]
+      }
+    },
+
+    "vulnerability-scanner": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["vulnerability scan", "owasp", "attack surface", "risk assessment", "security scan"],
+        "intentPatterns": ["(scan|assess|find).*?vulnerabilit", "owasp.*?(scan|check|audit)"]
+      }
+    },
+
+    "scanning-tools": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["security scanning tool", "nmap", "nikto", "burp suite", "port scan", "network scan"],
+        "intentPatterns": ["(nmap|nikto|burp|wireshark)", "(scan|assess).*?(network|port|wireless)"]
+      }
+    },
+
+    "html-injection-testing": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["html injection", "xss", "content injection", "cross site scripting"],
+        "intentPatterns": ["(test|detect|prevent).*?(html|xss).*?injection"]
+      }
+    },
+
+    "sql-injection-testing": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["sql injection", "sqli", "database injection", "parameterized query"],
+        "intentPatterns": ["(test|detect|prevent).*?sql.*?injection"]
+      }
+    },
+
+    "top-web-vulnerabilities": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["web vulnerability", "owasp top 10", "injection attack", "access control", "security flaw"],
+        "intentPatterns": ["(web|application).*?vulnerabilit", "owasp.*?top.*?10"]
+      }
+    },
+
+    "observability-engineer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["observability", "monitoring", "tracing", "sli", "slo", "prometheus", "grafana", "opentelemetry"],
+        "intentPatterns": ["(monitor|observ|trac).*?(system|service|application)", "(sli|slo|error.?budget|alert).*?(defin|set|track)"]
+      }
+    },
+
+    "observability-monitoring-monitor-setup": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["monitor setup", "alert setup", "dashboard setup", "metrics collection"],
+        "intentPatterns": ["(setup|configur|deploy).*?(monitor|alert|dashboard)"]
+      }
+    },
+
+    "prometheus-configuration": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["prometheus", "promql", "prometheus config", "metrics scraping", "alertmanager"],
+        "intentPatterns": ["prometheus.*?(config|query|alert|rule)", "promql"]
+      }
+    },
+
+    "incident-response-smart-fix": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["incident response", "production incident", "outage", "postmortem", "runbook"],
+        "intentPatterns": ["(incident|outage|production).*?(respond|fix|diagnos)", "(postmortem|runbook|escalat)"]
+      }
+    },
+
+    "workflow-orchestration-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["workflow orchestration", "temporal", "saga pattern", "distributed transaction", "durable workflow"],
+        "intentPatterns": ["(workflow|saga|orchestrat).*?(pattern|design)", "temporal.*?(workflow|activity)"]
+      }
+    },
+
+    "multi-cloud-architecture": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["multi-cloud", "cloud agnostic", "vendor lock-in", "cross cloud", "hybrid cloud"],
+        "intentPatterns": ["multi.?cloud.*?(architect|design|strateg)", "(avoid|prevent).*?vendor.*?lock"]
+      }
+    },
+
+    "github-automation": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["github automation", "github api", "github issue", "github pr", "gh cli"],
+        "intentPatterns": ["(automat|manag).*?github", "github.*?(issue|pr|branch|release).*?(automat|creat)"]
+      }
+    },
+
+    "github-workflow-automation": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["github actions", "ci cd", "github workflow", "workflow yaml", "github ci"],
+        "intentPatterns": ["github.*?(action|workflow).*?(creat|setup|fix)", "(ci|cd).*?(pipeline|workflow).*?github"]
+      }
+    },
+
+    "finishing-a-development-branch": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["finish branch", "merge branch", "branch cleanup", "pr ready", "integration"],
+        "intentPatterns": ["(finish|complet|merg).*?(branch|feature)", "branch.*?(ready|clean|integrat)"]
+      }
+    },
+
+    "using-git-worktrees": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["git worktree", "worktree", "isolated workspace"],
+        "intentPatterns": ["git.*?worktree", "(isolat|parallel).*?workspace"]
+      }
+    },
+
+    "brainstorming": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["brainstorm", "ideation", "creative thinking", "design session", "explore ideas"],
+        "intentPatterns": ["(brainstorm|ideat|explor).*?(idea|approach|solution|design)"]
+      }
+    },
+
+    "business-analyst": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["business analysis", "kpi", "dashboard", "business intelligence", "strategic analysis"],
+        "intentPatterns": ["(business|market|strategic).*?(analy|insight|intelligence)", "(kpi|metric|dashboard).*?(defin|track|build)"]
+      }
+    },
+
+    "deep-research": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["deep research", "literature review", "market analysis", "competitive analysis", "due diligence"],
+        "intentPatterns": ["(deep|thorough|comprehensive).*?research", "(literature|market|competitive).*?(review|analysis)"]
+      }
+    },
+
+    "research-engineer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["research engineer", "academic research", "scientific rigor", "formal verification"],
+        "intentPatterns": ["(academic|scientific|formal).*?(research|verification|analysis)"]
+      }
+    },
+
+    "reverse-engineer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["reverse engineer", "binary analysis", "disassembly", "decompilation", "ghidra", "ida pro"],
+        "intentPatterns": ["reverse.*?engineer", "(binary|executable).*?(analyz|inspect)", "(ghidra|ida.?pro|radare)"]
+      }
+    },
+
+    "context-driven-development": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["context driven", "product.md", "tech-stack.md", "workflow.md"],
+        "intentPatterns": ["context.?driven.*?develop"]
+      }
+    },
+
+    "writing-plans": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["write plan", "implementation plan", "task plan", "spec", "requirements"],
+        "intentPatterns": ["(write|create|draft).*?(plan|spec|requirement)", "(plan|spec).*?before.*?cod"]
+      }
+    },
+
+    "readme": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["readme", "project documentation", "write readme", "document project"],
+        "intentPatterns": ["(write|create|update|generat).*?readme", "(document|describ).*?project"]
+      }
+    },
+
+    "wiki-architect": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["wiki", "documentation structure", "onboarding guide", "codebase documentation"],
+        "intentPatterns": ["(create|generat|build).*?wiki", "(document|map).*?codebase"]
+      }
+    },
+
+    "mermaid-expert": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["mermaid", "flowchart", "sequence diagram", "erd", "architecture diagram"],
+        "intentPatterns": ["(create|draw|generat).*?(diagram|flowchart|sequence|erd)", "mermaid.*?(diagram|chart)"]
+      }
+    },
+
+    "vector-database-engineer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["vector database", "pinecone", "weaviate", "qdrant", "milvus", "pgvector", "embedding"],
+        "intentPatterns": ["vector.*?(database|db|store|search)", "(pinecone|weaviate|qdrant|milvus|pgvector)"]
+      }
+    },
+
+    "similarity-search-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["similarity search", "nearest neighbor", "semantic search", "vector search", "cosine similarity"],
+        "intentPatterns": ["(similarity|semantic|vector).*?search", "(nearest|approximate).*?neighbor"]
+      }
+    },
+
+    "cc-skill-backend-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["backend pattern", "node.js pattern", "express pattern", "server pattern"],
+        "intentPatterns": ["(backend|server|node|express).*?pattern"]
+      }
+    },
+
+    "cc-skill-coding-standards": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["coding standard", "code convention", "style guide", "linting rule"],
+        "intentPatterns": ["(coding|code).*?(standard|convention|style)", "lint.*?(rule|config)"]
+      }
+    },
+
+    "cc-skill-frontend-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["frontend pattern", "react pattern", "next.js pattern", "state management"],
+        "intentPatterns": ["(frontend|react|next\\.?js).*?pattern", "state.*?management.*?pattern"]
+      }
+    },
+
+    "ui-ux-designer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["ui design", "ux design", "wireframe", "design system", "user research", "accessibility"],
+        "intentPatterns": ["(design|create).*?(ui|ux|wireframe|interface)", "(user|usability).*?(research|test)"]
+      }
+    },
+
+    "ui-ux-pro-max": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["ui component", "design token", "color palette", "typography", "glassmorphism", "dark mode"],
+        "intentPatterns": ["(build|style|design).*?(component|ui|dashboard|landing)", "(glassmorphism|neumorphism|bento|brutalism)"]
+      }
+    },
+
+    "ui-visual-validator": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["visual validation", "ui test", "screenshot test", "visual regression", "design compliance"],
+        "intentPatterns": ["(visual|screenshot).*?(validat|test|regress)", "(verify|check).*?ui.*?(look|appear)"]
+      }
+    },
+
+    "ui-skills": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["ui constraint", "interface guideline", "ui rule"],
+        "intentPatterns": ["ui.*?(constraint|guideline|rule)"]
+      }
+    },
+
+    "frontend-design": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["frontend design", "web ui", "visual identity", "css design", "web interface"],
+        "intentPatterns": ["(frontend|web).*?(design|style|aesthetic)", "(visual|css).*?(design|identity)"]
+      }
+    },
+
+    "stitch-ui-design": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["stitch", "google stitch", "stitch prompt", "stitch design", "stitch mockup", "ai ui generator"],
+        "intentPatterns": ["stitch.*?(design|prompt|ui|mockup)", "google.*?stitch", "(generate|create).*?ui.*?stitch"]
+      }
+    },
+
+    "wcag-audit-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["wcag", "accessibility audit", "a11y", "screen reader", "aria", "wcag 2.2"],
+        "intentPatterns": ["(wcag|a11y|accessibility).*?(audit|check|fix|comply)", "(screen.?reader|aria|keyboard).*?access"]
+      }
+    },
+
+    "webapp-testing": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["webapp test", "browser test", "playwright", "e2e test", "browser automation"],
+        "intentPatterns": ["(test|automat).*?(webapp|browser|frontend)", "playwright.*?(test|automat)"]
+      }
+    },
+
+    "azure-ai-contentsafety-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure content safety", "content moderation", "azure ai safety"],
+        "intentPatterns": ["azure.*?content.*?safety"]
+      }
+    },
+
+    "azure-ai-contentunderstanding-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure content understanding", "azure document analysis", "azure ai understanding"],
+        "intentPatterns": ["azure.*?content.*?understand"]
+      }
+    },
+
+    "azure-ai-projects-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure ai project", "azure ai sdk", "azure foundry"],
+        "intentPatterns": ["azure.*?(ai|foundry).*?(project|sdk)"]
+      }
+    },
+
+    "azure-ai-textanalytics-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure text analytics", "azure sentiment", "azure ner", "azure language"],
+        "intentPatterns": ["azure.*?(text.*?analytic|sentiment|ner|language)"]
+      }
+    },
+
+    "azure-ai-transcription-py": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure transcription", "azure speech", "azure stt", "speech to text"],
+        "intentPatterns": ["azure.*?(transcri|speech|stt)"]
+      }
+    },
+
+    "notebooklm": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["notebooklm", "google notebooklm", "notebook lm", "gemini notebook"],
+        "intentPatterns": ["notebook.?lm", "google.*?notebook"]
+      }
+    },
+
+    "linear-claude-skill": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["linear", "linear issue", "linear project", "linear team"],
+        "intentPatterns": ["linear.*?(issue|project|team|sprint)"]
+      }
+    },
+
+    "mcp-builder-ms": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["mcp server", "model context protocol", "mcp tool", "fastmcp"],
+        "intentPatterns": ["(build|create|design).*?mcp.*?(server|tool)", "model.*?context.*?protocol"]
+      }
+    },
+
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["create skill", "skill developer", "skill trigger", "skill-rules", "yaml frontmatter", "hook mechanism"],
+        "intentPatterns": ["(create|add|modify|debug).*?skill", "skill.*?(trigger|rule|activation|hook)"]
+      }
+    },
+
+    "skill-creator-ms": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["azure skill", "foundry skill", "microsoft skill"],
+        "intentPatterns": ["(create|build).*?(azure|microsoft|foundry).*?skill"]
+      }
+    },
+
+    "performance-testing-review-ai-review": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["code review ai", "ai code review", "automated review", "copilot review"],
+        "intentPatterns": ["(ai|automat).*?code.*?review", "code.*?review.*?(ai|automat)"]
+      }
+    },
+
+    "performance-testing-review-multi-agent-review": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["multi-agent review", "performance review", "agent code review"],
+        "intentPatterns": ["multi.?agent.*?(review|performance)"]
+      }
+    },
+
+    "react-modernization": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["react upgrade", "react migration", "class to hooks", "react codemod", "react 18", "react 19", "modernize react", "migrate class component"],
+        "intentPatterns": ["(upgrade|migrat|moderniz).*?react", "react.*?(18|19).*?(upgrade|migrat)", "(class|lifecycle).*?(hook|function).*?component"]
+      }
+    },
+
+    "react-best-practices": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["react performance", "next.js optimization", "bundle size", "react waterfall", "code splitting", "react memo", "server component", "vercel best practices"],
+        "intentPatterns": ["react.*?(performance|optimiz|bundle|waterfall)", "(next\\.?js|nextjs).*?(performance|optimiz)", "server.*?component.*?(pattern|best)"]
+      }
+    },
+
+    "react-flow-node-ts": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["react flow", "custom node", "react flow node", "workflow editor", "node-based ui", "flow builder", "xyflow"],
+        "intentPatterns": ["react.?flow.*?(node|component|custom)", "(workflow|flow).*?(editor|builder|canvas)", "custom.*?node.*?(react|typescript)"]
+      }
+    },
+
+    "react-native-architecture": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["react native", "expo", "mobile app", "react navigation", "expo router", "native module", "eas build", "cross platform mobile"],
+        "intentPatterns": ["react.?native.*?(architect|build|start|setup)", "expo.*?(project|router|build|config)", "(mobile|ios|android).*?(app|development).*?react"]
+      }
+    },
+
+    "n8n-mcp-tools-expert": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["n8n mcp", "n8n node", "n8n workflow", "n8n template", "n8n validate", "search nodes", "n8n automation"],
+        "intentPatterns": ["n8n.*?(mcp|tool|node|workflow|template)", "(search|find|validate).*?n8n"]
+      }
+    },
+
+    "react-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["react pattern", "compound component", "render props", "custom hook pattern", "react composition", "react anti-pattern"],
+        "intentPatterns": ["react.*?(pattern|composition|compound|anti.?pattern)", "(hook|component).*?pattern.*?react"]
+      }
+    },
+
+    "react-ui-patterns": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["loading state", "error handling ui", "empty state", "button loading", "skeleton ui", "toast notification", "form submission", "optimistic update"],
+        "intentPatterns": ["(loading|error|empty).*?state.*?(pattern|react|component)", "(button|form).*?(loading|submit).*?pattern", "optimistic.*?(update|ui)"]
+      }
+    },
+
+    "n8n-code-python": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["n8n python", "n8n code python", "python code node", "n8n _input", "n8n _json", "n8n standard library"],
+        "intentPatterns": ["n8n.*?python.*?(code|node)", "python.*?n8n.*?(code|node)", "_input\\.all|_input\\.first|_input\\.item"]
+      }
+    },
+
+    "address-github-comments": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["github comments", "pr review", "address feedback", "resolve comments", "gh pr comment", "review threads"],
+        "intentPatterns": ["(address|resolve|respond).*?(comment|feedback|review)", "pr.*?(comment|review|feedback)"]
+      }
+    },
+
+    "api-documentation-generator": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["api docs", "generate api documentation", "endpoint docs", "swagger docs", "api reference", "document api"],
+        "intentPatterns": ["(generate|create|write).*?api.*?(doc|reference)", "api.*?(doc|reference).*?(generat|creat)"]
+      }
+    },
+
+    "api-documenter": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["openapi spec", "api spec", "developer portal", "sdk docs", "asyncapi", "openapi 3.1"],
+        "intentPatterns": ["(openapi|asyncapi).*?(spec|document)", "(developer|api).*?portal", "(generate|build).*?sdk.*?doc"]
+      }
+    },
+
+    "changelog-automation": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["changelog", "release notes", "conventional commits", "semver", "keep a changelog", "version bump", "release workflow"],
+        "intentPatterns": ["(generate|automate|create).*?changelog", "(release|version).*?(notes|bump|tag)", "conventional.*?commit"]
+      }
+    },
+
+    "code-documentation-code-explain": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["explain code", "code walkthrough", "how does this work", "code explanation", "algorithm breakdown", "onboarding guide"],
+        "intentPatterns": ["explain.*?(code|function|algorithm|module)", "(walkthrough|breakdown).*?(code|algorithm)", "how.*?(does|work).*?(this|code)"]
+      }
+    },
+
+    "code-documentation-doc-generate": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["generate docs from code", "doc generation", "api docs from code", "auto document", "documentation pipeline", "living documentation"],
+        "intentPatterns": ["(generate|create).*?doc.*?from.*?code", "(auto|automat).*?document", "living.*?documentation"]
+      }
+    },
+
+    "design-md": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["design.md", "stitch design", "design system", "semantic design", "design tokens"],
+        "intentPatterns": ["(create|generate|analyze).*?design\\.md", "stitch.*?design.*?(system|token)", "semantic.*?design"]
+      }
+    },
+
+    "doc-coauthoring": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["write a doc", "draft proposal", "create spec", "co-author", "write up", "decision doc", "rfc", "prd"],
+        "intentPatterns": ["(write|draft|co.?author).*?(doc|proposal|spec|rfc|prd)", "(decision|design).*?doc"]
+      }
+    },
+
+    "docs-architect": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["system documentation", "architecture guide", "technical manual", "codebase documentation", "onboarding docs"],
+        "intentPatterns": ["(document|create).*?(system|architecture|technical).*?(guide|manual|doc)", "(onboarding|codebase).*?doc"]
+      }
+    },
+
+    "documentation-generation-doc-generate": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["documentation pipeline", "docs as code", "mkdocs", "sphinx", "doc generation system", "living documentation"],
+        "intentPatterns": ["(doc|documentation).*?(pipeline|system|automation)", "(mkdocs|sphinx|docusaurus).*?(setup|config)", "docs.?as.?code"]
+      }
+    },
+
+    "documentation-templates": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["readme template", "doc template", "documentation structure", "adr template", "llms.txt", "documentation convention"],
+        "intentPatterns": ["(readme|doc|adr).*?template", "(documentation|doc).*?(structure|convention|standard)", "llms\\.txt"]
+      }
+    }
+  }
+}
