@@ -19,11 +19,11 @@
 
 **Purpose**: Project initialization — directories, dependencies, configuration files
 
-- [ ] T001 Create project directory structure: `tax/`, `html/`, `prompts/`, `tests/`, `.streamlit/` per plan.md
-- [ ] T002 Create `requirements.txt` with all dependencies (FastMCP >=2.14,<4.0, Streamlit >=1.33,<2.0, openai >=1.0,<3.0, mcp >=1.0,<3.0, nest-asyncio >=1.6,<2.0, python-dotenv >=1.0,<2.0, structlog >=24.0,<26.0, pytest >=8.0, pytest-asyncio >=0.23)
-- [ ] T003 [P] Create `.env.example` with OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT, MAX_SESSION_COST, MCP_SERVER_CMD, MCP_SERVER_ARGS
-- [ ] T004 [P] Create `.streamlit/config.toml` with theme configuration
-- [ ] T005 [P] Create `tax/__init__.py`, `html/__init__.py` package init files with public API exports
+- [X] T001 Create project directory structure: `tax/`, `html/`, `prompts/`, `tests/`, `.streamlit/` per plan.md
+- [X] T002 Create `requirements.txt` with all dependencies (FastMCP >=2.14,<4.0, Streamlit >=1.33,<2.0, openai >=1.0,<3.0, mcp >=1.0,<3.0, nest-asyncio >=1.6,<2.0, python-dotenv >=1.0,<2.0, structlog >=24.0,<26.0, pytest >=8.0, pytest-asyncio >=0.23)
+- [X] T003 [P] Create `.env.example` with OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TIMEOUT, MAX_SESSION_COST, MCP_SERVER_CMD, MCP_SERVER_ARGS
+- [X] T004 [P] Create `.streamlit/config.toml` with theme configuration
+- [X] T005 [P] Create `tax/__init__.py`, `html/__init__.py` package init files with public API exports
 
 **Checkpoint**: Project skeleton ready, dependencies installable via `pip install -r requirements.txt`
 
