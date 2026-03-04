@@ -61,10 +61,10 @@ async def run_analysis_pipeline(
         "annual_return": assumptions.get("annual_return", 0.07),
         "model_years": assumptions.get("model_years", 30),
         "current_age": inputs.get("current_age"),
-        "federal_tax": tax_data.get("federal_tax"),
-        "state_tax": tax_data.get("state_tax"),
+        "annual_income": inputs.get("annual_income"),
+        "filing_status": inputs.get("filing_status"),
+        "state": inputs.get("state"),
         "social_security": inputs.get("social_security", 0),
-        "rmd": inputs.get("rmd", 0),
     }
 
     opt_args = {

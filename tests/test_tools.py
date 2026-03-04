@@ -213,8 +213,9 @@ class TestAnalyzeRothProjections:
             annual_return=0.07,
             model_years=30,
             current_age=55,
-            federal_tax=5_500,
-            state_tax=2_000,
+            annual_income=75_000,
+            filing_status="single",
+            state="CA",
         )
         parsed = _assert_dual_return(result)
         data = parsed["data"]
@@ -229,8 +230,9 @@ class TestAnalyzeRothProjections:
             annual_return=0.07,
             model_years=20,
             current_age=55,
-            federal_tax=5_500,
-            state_tax=2_000,
+            annual_income=75_000,
+            filing_status="single",
+            state="CA",
         )
         parsed = _assert_dual_return(result)
         summary = parsed["data"]["summary"]
@@ -252,8 +254,9 @@ class TestAnalyzeRothProjections:
             annual_return=0.07,
             model_years=model_years,
             current_age=50,
-            federal_tax=3_000,
-            state_tax=1_500,
+            annual_income=75_000,
+            filing_status="single",
+            state="CA",
         )
         parsed = _assert_dual_return(result)
         projections = parsed["data"]["projections"]
@@ -266,8 +269,9 @@ class TestAnalyzeRothProjections:
             annual_return=0.07,
             model_years=10,
             current_age=55,
-            federal_tax=5_000,
-            state_tax=2_000,
+            annual_income=75_000,
+            filing_status="single",
+            state="CA",
         )
         _assert_dual_return(result)
 

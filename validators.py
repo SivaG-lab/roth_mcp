@@ -7,7 +7,6 @@ and returns structured result with status/inputs/assumptions/errors.
 from __future__ import annotations
 
 from tax.state_rates import STATE_TAX_RATES
-from tax.irmaa import IRMAA_THRESHOLDS
 
 VALID_FILING_STATUSES = {"single", "married_joint", "married_separate", "head_of_household"}
 VALID_STATES = set(STATE_TAX_RATES.keys())
@@ -109,7 +108,9 @@ def validate_inputs(**kwargs) -> dict:
 
     if conversion_schedule is not None:
         # Schedule takes precedence
-        if isinstance(conversion_schedule, list) and all(isinstance(x, (int, float)) for x in conversion_schedule):
+        if isinstance(conversion_schedule, list) and not conversion_schedule:
+            errors.append({"field": "conversion_schedule", "message": "Conversion schedule must not be empty"})
+        elif isinstance(conversion_schedule, list) and all(isinstance(x, (int, float)) for x in conversion_schedule):
             if any(x < 0 for x in conversion_schedule):
                 errors.append({"field": "conversion_schedule", "message": "Schedule amounts must be ≥ 0"})
             elif trad_ira_balance is not None and sum(conversion_schedule) > trad_ira_balance:
@@ -136,12 +137,6 @@ def validate_inputs(**kwargs) -> dict:
     else:
         inputs["roth_ira_balance_initial"] = 0.0
 
-    taxable_dollars = kwargs.get("taxable_dollars_available")
-    if taxable_dollars is not None:
-        inputs["taxable_dollars_available"] = float(taxable_dollars)
-    else:
-        inputs["taxable_dollars_available"] = 0.0
-
     cost_basis = kwargs.get("cost_basis")
     if cost_basis is not None:
         inputs["cost_basis"] = float(cost_basis)
@@ -159,12 +154,6 @@ def validate_inputs(**kwargs) -> dict:
             assumptions["annual_return"] = float(annual_return)
     else:
         assumptions["annual_return"] = 0.07
-
-    taxable_return = kwargs.get("taxable_account_annual_return")
-    if taxable_return is not None:
-        assumptions["taxable_account_annual_return"] = float(taxable_return)
-    else:
-        assumptions["taxable_account_annual_return"] = 0.07
 
     model_years = kwargs.get("model_years")
     if model_years is not None:
@@ -211,35 +200,6 @@ def validate_inputs(**kwargs) -> dict:
         inputs["rmd"] = 0.0
     else:
         inputs["rmd"] = 0.0
-
-    # IRMAA: default 0 if income below threshold
-    irmaa = kwargs.get("irmaa")
-    if irmaa is not None:
-        inputs["irmaa"] = float(irmaa)
-    elif income_val is not None and fs_val is not None:
-        lookup_key = "single" if fs_val in ("married_separate", "head_of_household") else fs_val
-        thresholds = IRMAA_THRESHOLDS.get(lookup_key, IRMAA_THRESHOLDS["single"])
-        first_threshold = thresholds[0][0]
-        if income_val <= first_threshold:
-            auto_filled["irmaa"] = {
-                "value": 0,
-                "source": "age_based_default",
-                "reason": f"Income < {fs_val} threshold",
-            }
-            inputs["irmaa"] = 0.0
-        else:
-            inputs["irmaa"] = 0.0
-    else:
-        inputs["irmaa"] = 0.0
-
-    # --- Per-year arrays (optional, pass through) ---
-    other_income_by_year = kwargs.get("other_ordinary_income_by_year")
-    if other_income_by_year is not None:
-        inputs["other_ordinary_income_by_year"] = other_income_by_year
-
-    spending_by_year = kwargs.get("spending_need_after_tax_by_year")
-    if spending_by_year is not None:
-        inputs["spending_need_after_tax_by_year"] = spending_by_year
 
     # --- Determine status ---
     if errors:

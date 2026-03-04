@@ -90,8 +90,9 @@ class TestEndToEndFlow:
             annual_return=v_data["assumptions"]["annual_return"],
             model_years=v_data["assumptions"]["model_years"],
             current_age=validated_inputs["current_age"],
-            federal_tax=t_data["federal_tax"],
-            state_tax=t_data["state_tax"],
+            annual_income=validated_inputs["annual_income"],
+            filing_status=validated_inputs["filing_status"],
+            state=validated_inputs["state"],
         )
         p_parsed = _parse(proj_result)
         p_data = p_parsed["data"]
@@ -191,7 +192,6 @@ class TestToolChaining:
             state=inputs["state"],
             social_security=inputs.get("social_security", 0),
             rmd=inputs.get("rmd", 0),
-            irmaa=inputs.get("irmaa", 0),
         )
         t_parsed = _parse(tax_result)
         t_data = t_parsed["data"]
@@ -218,8 +218,9 @@ class TestToolChaining:
             annual_return=0.07,
             model_years=20,
             current_age=55,
-            federal_tax=t_data["federal_tax"],
-            state_tax=t_data["state_tax"],
+            annual_income=150_000,
+            filing_status="married_joint",
+            state="CA",
         )
         p_parsed = _parse(proj_result)
         p_data = p_parsed["data"]
@@ -256,8 +257,9 @@ class TestToolChaining:
             annual_return=v_data["assumptions"]["annual_return"],
             model_years=v_data["assumptions"]["model_years"],
             current_age=inputs["current_age"],
-            federal_tax=t_data["federal_tax"],
-            state_tax=t_data["state_tax"],
+            annual_income=inputs["annual_income"],
+            filing_status=inputs["filing_status"],
+            state=inputs["state"],
         )
 
         # 4 - optimize
@@ -324,7 +326,6 @@ class TestPartialInputScenarios:
         inputs = data["inputs"]
         assert "social_security" in inputs
         assert "rmd" in inputs
-        assert "irmaa" in inputs
 
         # Defaults should have been applied in assumptions
         assumptions = data["assumptions"]
@@ -397,8 +398,9 @@ class TestPartialInputScenarios:
             annual_return=0.07,
             model_years=10,
             current_age=55,
-            federal_tax=0,
-            state_tax=0,
+            annual_income=75_000,
+            filing_status="single",
+            state="CA",
         )
         p_parsed = _parse(proj_result)
         p_data = p_parsed["data"]
@@ -449,8 +451,9 @@ class TestPartialInputScenarios:
             annual_return=0.07,
             model_years=20,
             current_age=55,
-            federal_tax=t_data["federal_tax"],
-            state_tax=t_data["state_tax"],
+            annual_income=150_000,
+            filing_status="married_joint",
+            state="CA",
         )
         p_parsed = _parse(proj_result)
         p_data = p_parsed["data"]

@@ -407,21 +407,6 @@ class TestAutoFillRMD:
 
 
 # ---------------------------------------------------------------------------
-# Auto-fill: IRMAA = 0 when income below threshold
-# ---------------------------------------------------------------------------
-
-class TestAutoFillIRMAA:
-    """IRMAA should be auto-filled to 0 when income is below the threshold."""
-
-    def test_irmaa_auto_filled_for_low_income_single(self):
-        result = validate_inputs(**_complete_inputs(
-            annual_income=80_000,
-            filing_status="single",
-        ))
-        assert "irmaa" in result["auto_filled"]
-        assert result["auto_filled"]["irmaa"]["value"] == 0
-
-
 # ---------------------------------------------------------------------------
 # Auto-wrap conversion_amount to schedule
 # ---------------------------------------------------------------------------

@@ -44,21 +44,16 @@ def validate_projection_inputs(
     conversion_amount: float | None = None,
     conversion_schedule: list[float] | None = None,
     roth_ira_balance_initial: float | None = None,
-    taxable_dollars_available: float | None = None,
     annual_return: float | None = None,
-    taxable_account_annual_return: float | None = None,
     model_years: int | None = None,
     social_security: float | None = None,
     rmd: float | None = None,
-    irmaa: float | None = None,
     cost_basis: float = 0,
-    other_ordinary_income_by_year: list[float] | None = None,
-    spending_need_after_tax_by_year: list[float] | None = None,
 ) -> str:
     """Validate and prepare all user financial inputs for Roth conversion analysis.
     ALWAYS call this tool first with any financial information the user provides."""
     start = time.monotonic()
-    kwargs = {k: v for k, v in locals().items() if v is not None}
+    kwargs = {k: v for k, v in locals().items() if v is not None and k != "start"}
     result = validate_inputs(**kwargs)
     html = format_validation_result(result)
     logger.info("validate_projection_inputs completed", extra={"status": result.get("status"), "elapsed": round(time.monotonic() - start, 3)})
@@ -77,7 +72,6 @@ def estimate_tax_components(
     cost_basis: float = 0,
     social_security: float = 0,
     rmd: float = 0,
-    irmaa: float = 0,
     other_ordinary_income: float = 0,
 ) -> str:
     """Calculate federal tax, state tax, IRMAA surcharge, Social Security tax impact,
@@ -115,16 +109,12 @@ def analyze_roth_projections(
     roth_ira_balance_initial: float = 0,
     conversion_schedule: list[float] | None = None,
     annual_return: float = 0.07,
-    taxable_account_annual_return: float = 0.07,
-    taxable_dollars_available: float = 0,
     model_years: int = 30,
     current_age: int | None = None,
-    federal_tax: float | None = None,
-    state_tax: float | None = None,
+    annual_income: float = 0,
+    filing_status: str = "single",
+    state: str = "CA",
     social_security: float = 0,
-    rmd: float = 0,
-    other_ordinary_income_by_year: list[float] | None = None,
-    spending_need_after_tax_by_year: list[float] | None = None,
 ) -> str:
     """Generate year-by-year comparison of convert vs. no-convert scenarios."""
     start = time.monotonic()
@@ -135,7 +125,6 @@ def analyze_roth_projections(
         )
 
     schedule = conversion_schedule or []
-    total_tax_per_conversion = (federal_tax or 0) + (state_tax or 0)
 
     # Year-by-year projection
     roth_balance = roth_ira_balance_initial
@@ -148,14 +137,25 @@ def analyze_roth_projections(
         age = current_age + year
         conversion = schedule[year - 1] if year - 1 < len(schedule) else 0.0
 
-        # Tax on this year's conversion (proportional to first year's tax)
-        if conversion > 0 and schedule and schedule[0] > 0:
-            tax_paid = total_tax_per_conversion * (conversion / schedule[0])
+        # Cap conversion at available balance (after RMD)
+        rmd_amount = compute_rmd(age, trad_balance)
+        conversion = min(conversion, max(trad_balance - rmd_amount, 0))
+
+        # Compute actual tax for this year's conversion amount
+        if conversion > 0:
+            tax_result = compute_tax_components(
+                annual_income=annual_income,
+                conversion_amount=conversion,
+                filing_status=filing_status,
+                state=state,
+                social_security=social_security,
+                rmd=compute_rmd(age, trad_balance),
+            )
+            tax_paid = tax_result.get("total_tax_cost", 0.0)
         else:
             tax_paid = 0.0
 
-        # RMD for both paths
-        rmd_amount = compute_rmd(age, trad_balance)
+        # RMD for no-convert path
         rmd_no_convert = compute_rmd(age, trad_no_convert)
 
         # Convert path: move conversion from trad to roth, pay tax
