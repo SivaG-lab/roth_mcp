@@ -30,6 +30,7 @@ async def run_analysis_pipeline(
 
     html_cards = {}
     compacted = {}
+    logger.info("Pipeline started")
 
     # Stage 1: Tax estimate (serial)
     tax_args = {
@@ -102,6 +103,7 @@ async def run_analysis_pipeline(
         _call_safe("breakeven_analysis", be_args),
     )
 
+    logger.info("Stage 2 parallel calls complete")
     for tool_name, result in results:
         if result is not None:
             html_cards[tool_name] = result
@@ -123,6 +125,7 @@ async def run_analysis_pipeline(
     except Exception as e:
         logger.error("Report generation failed: %s", e)
 
+    logger.info("Pipeline complete, %d tools succeeded", len(html_cards))
     return {
         "html_cards": html_cards,
         "compacted": compacted,

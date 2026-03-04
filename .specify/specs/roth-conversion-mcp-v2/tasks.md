@@ -230,9 +230,9 @@
 
 ### Implementation for User Story 10
 
-- [ ] T052 [US10] Create `tests/test_integration.py` — MCP roundtrip tests: start mcp_server.py as subprocess, connect via MCP client, call all 6 tools with test data, verify dual-return JSON for each, verify pipeline runs tools in correct order
-- [ ] T053 [US10] Create `tests/test_orchestrator.py` — pipeline tests: mock MCP session, verify run_analysis_pipeline() calls tools in order (tax → 3-way parallel → report), verify partial failure handling (one parallel tool fails, report still generates)
-- [ ] T054 [US10] Run full test suite `pytest tests/ -v` — verify all tests pass, verify coverage ≥ 80% for tax engine, validators, dual-return, HTML templates
+- [X] T052 [US10] Create `tests/test_integration.py` — MCP roundtrip tests: start mcp_server.py as subprocess, connect via MCP client, call all 6 tools with test data, verify dual-return JSON for each, verify pipeline runs tools in correct order
+- [X] T053 [US10] Create `tests/test_orchestrator.py` — pipeline tests: mock MCP session, verify run_analysis_pipeline() calls tools in order (tax → 3-way parallel → report), verify partial failure handling (one parallel tool fails, report still generates)
+- [X] T054 [US10] Run full test suite `pytest tests/ -v` — verify all tests pass, verify coverage ≥ 80% for tax engine, validators, dual-return, HTML templates
 
 **Checkpoint**: All tests green. Coverage target met. MCP roundtrip verified.
 
@@ -242,8 +242,8 @@
 
 **Purpose**: Final quality improvements across all stories
 
-- [ ] T055 [P] Add structlog logging to `mcp_server.py` — log tool calls, execution time, errors
-- [ ] T056 [P] Add structlog logging to `agent_loop.py` and `pipeline.py` — log GPT calls, token usage, pipeline stages
+- [X] T055 [P] Add structlog logging to `mcp_server.py` — log tool calls, execution time, errors
+- [X] T056 [P] Add structlog logging to `agent_loop.py` and `pipeline.py` — log GPT calls, token usage, pipeline stages
 - [ ] T057 Create `README.md` — project description, setup instructions, architecture overview, usage examples
 - [ ] T058 Run quickstart.md validation — follow quickstart steps on clean environment, verify everything works
 - [ ] T059 Final end-to-end test — start Streamlit, enter "I'm 55, MFJ, $150k income, $500k IRA, CA, convert $50k/yr for 5 years", verify full pipeline runs, report generates

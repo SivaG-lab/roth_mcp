@@ -104,7 +104,8 @@ async def agent_loop(
     pipeline_result = None
     max_iterations = 10
 
-    for _ in range(max_iterations):
+    for iteration in range(max_iterations):
+        logger.debug("Agent loop iteration %d", iteration + 1)
         response = client.chat.completions.create(
             model=OPENAI_MODEL,
             messages=messages,

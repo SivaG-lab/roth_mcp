@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import sys
+import time
 
 from fastmcp import FastMCP
+
+logger = logging.getLogger(__name__)
 
 from dual_return import dual_return
 from validators import validate_inputs
@@ -53,9 +57,11 @@ def validate_projection_inputs(
 ) -> str:
     """Validate and prepare all user financial inputs for Roth conversion analysis.
     ALWAYS call this tool first with any financial information the user provides."""
+    start = time.monotonic()
     kwargs = {k: v for k, v in locals().items() if v is not None}
     result = validate_inputs(**kwargs)
     html = format_validation_result(result)
+    logger.info("validate_projection_inputs completed", extra={"status": result.get("status"), "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(html, result)
 
 
@@ -76,6 +82,7 @@ def estimate_tax_components(
 ) -> str:
     """Calculate federal tax, state tax, IRMAA surcharge, Social Security tax impact,
     and RMD tax for a specific Roth conversion amount."""
+    start = time.monotonic()
     if not all([annual_income is not None, conversion_amount is not None,
                 filing_status, state]):
         return dual_return(
@@ -95,6 +102,7 @@ def estimate_tax_components(
     )
 
     html = format_tax_estimate(result)
+    logger.info("estimate_tax_components completed", extra={"conversion": conversion_amount, "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(html, result)
 
 
@@ -119,6 +127,7 @@ def analyze_roth_projections(
     spending_need_after_tax_by_year: list[float] | None = None,
 ) -> str:
     """Generate year-by-year comparison of convert vs. no-convert scenarios."""
+    start = time.monotonic()
     if trad_ira_balance is None or current_age is None:
         return dual_return(
             "<div style='color:#ef4444'>Missing required inputs for projections</div>",
@@ -189,6 +198,7 @@ def analyze_roth_projections(
 
     data = {"projections": projections, "summary": summary}
     html = format_projection_table(data)
+    logger.info("analyze_roth_projections completed", extra={"years": model_years, "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(html, data)
 
 
@@ -211,6 +221,7 @@ def optimize_conversion_schedule(
 ) -> str:
     """Find the optimal multi-year Roth conversion schedule that minimizes
     total tax cost using bracket-filling strategy."""
+    start = time.monotonic()
     if not all([trad_ira_balance, annual_income is not None, filing_status, state,
                 current_age is not None, retirement_age is not None]):
         return dual_return(
@@ -290,6 +301,7 @@ def optimize_conversion_schedule(
     }
 
     html = format_optimization_schedule(data)
+    logger.info("optimize_conversion_schedule completed", extra={"years": years_to_retire, "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(html, data)
 
 
@@ -308,6 +320,7 @@ def breakeven_analysis(
     state_tax: float | None = None,
 ) -> str:
     """Calculate how many years until the Roth conversion pays for itself."""
+    start = time.monotonic()
     if conversion_amount is None or current_age is None:
         return dual_return(
             "<div style='color:#ef4444'>Missing required inputs for breakeven</div>",
@@ -354,6 +367,7 @@ def breakeven_analysis(
     }
 
     html = format_breakeven(data)
+    logger.info("breakeven_analysis completed", extra={"years": breakeven_years, "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(html, data)
 
 
@@ -370,6 +384,7 @@ def generate_conversion_report(
 ) -> str:
     """Generate a comprehensive HTML report combining all analysis results.
     Call this LAST after all other tools have completed."""
+    start = time.monotonic()
 
     def _safe_parse(s: str) -> dict:
         if not s:
@@ -408,6 +423,7 @@ def generate_conversion_report(
         "sections_included": sections_included,
     }
 
+    logger.info("generate_conversion_report completed", extra={"sections": sections_included, "elapsed": round(time.monotonic() - start, 3)})
     return dual_return(report_html, {"summary": summary})
 
 
