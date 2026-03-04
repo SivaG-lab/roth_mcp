@@ -1,5 +1,7 @@
 """2024 Federal tax brackets and standard deductions."""
 
+from __future__ import annotations
+
 FEDERAL_BRACKETS = {
     "single": [
         (11600, 0.10),

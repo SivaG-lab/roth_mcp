@@ -1,5 +1,7 @@
 """Social Security benefit taxation using the provisional income formula."""
 
+from __future__ import annotations
+
 
 def compute_ss_taxation(
     ss_benefit: float, other_income: float, filing_status: str

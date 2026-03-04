@@ -167,14 +167,6 @@ def main():
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
 
-    # Display HTML cards
-    for tool_name, html_str in st.session_state.html_cards.items():
-        if html_str and "<div" in html_str:
-            if tool_name == "generate_conversion_report":
-                components.html(html_str, height=800, scrolling=True)
-            else:
-                st.html(html_str)
-
     # Chat input
     if user_input := st.chat_input("Type your message..."):
         # Display user message

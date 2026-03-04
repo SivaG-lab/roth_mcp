@@ -154,7 +154,5 @@ def compute_bracket_boundaries(
             "room_remaining": room,
         })
         prev_ceiling = ceiling
-        if annual_income < prev_ceiling and ceiling != float("inf"):
-            pass  # keep going to show all brackets
 
     return boundaries

@@ -1,5 +1,7 @@
 """State income tax rates — flat effective rates for all 50 states + DC."""
 
+from __future__ import annotations
+
 STATE_TAX_RATES = {
     "AL": 0.0500,
     "AK": 0.0,

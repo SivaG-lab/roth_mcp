@@ -1,5 +1,7 @@
 """Required Minimum Distribution (RMD) calculation using the Uniform Lifetime Table."""
 
+from __future__ import annotations
+
 RMD_TABLE = {
     73: 26.5,
     74: 25.5,

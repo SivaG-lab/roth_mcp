@@ -4,6 +4,8 @@ Medicare Part B premium surcharges based on MAGI, with 6 tiers for
 single and married-filing-jointly filers.
 """
 
+from __future__ import annotations
+
 IRMAA_THRESHOLDS = {
     "single": [
         (103000, 0),

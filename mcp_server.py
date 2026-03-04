@@ -79,8 +79,8 @@ def estimate_tax_components(
     """Calculate federal tax, state tax, IRMAA surcharge, Social Security tax impact,
     and RMD tax for a specific Roth conversion amount."""
     start = time.monotonic()
-    if not all([annual_income is not None, conversion_amount is not None,
-                filing_status, state]):
+    if not (annual_income is not None and conversion_amount is not None
+            and filing_status and state):
         return dual_return(
             "<div style='color:#ef4444'>Missing required inputs for tax estimate</div>",
             {"error": "Missing required: annual_income, conversion_amount, filing_status, state"},
@@ -224,8 +224,8 @@ def optimize_conversion_schedule(
     """Find the optimal multi-year Roth conversion schedule that minimizes
     total tax cost using bracket-filling strategy."""
     start = time.monotonic()
-    if not all([trad_ira_balance, annual_income is not None, filing_status, state,
-                current_age is not None, retirement_age is not None]):
+    if not (trad_ira_balance and annual_income is not None and filing_status and state
+            and current_age is not None and retirement_age is not None):
         return dual_return(
             "<div style='color:#ef4444'>Missing required inputs for optimization</div>",
             {"error": "Missing required inputs"},
@@ -379,6 +379,18 @@ def breakeven_analysis(
     return dual_return(html, data)
 
 
+def _safe_parse(s: str) -> dict:
+    """Parse JSON string, extracting 'data' key if present."""
+    if not s:
+        return {}
+    try:
+        parsed = json.loads(s)
+        return parsed.get("data", parsed) if isinstance(parsed, dict) else {}
+    except (json.JSONDecodeError, TypeError):
+        logger.warning("_safe_parse: failed to parse: %s", s[:200] if s else s)
+        return {}
+
+
 # ---------------------------------------------------------------------------
 # Tool 6: generate_conversion_report
 # ---------------------------------------------------------------------------
@@ -393,16 +405,6 @@ def generate_conversion_report(
     """Generate a comprehensive HTML report combining all analysis results.
     Call this LAST after all other tools have completed."""
     start = time.monotonic()
-
-    def _safe_parse(s: str) -> dict:
-        if not s:
-            return {}
-        try:
-            parsed = json.loads(s)
-            return parsed.get("data", parsed) if isinstance(parsed, dict) else {}
-        except (json.JSONDecodeError, TypeError):
-            logger.warning("_safe_parse: failed to parse: %s", s[:200] if s else s)
-            return {}
 
     inputs_data = _safe_parse(validated_inputs) if validated_inputs else {}
     tax_data = _safe_parse(tax_analysis) if tax_analysis else {}
@@ -440,8 +442,6 @@ def generate_conversion_report(
 # Entry point
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    # Windows stdout flush for MCP stdio transport
-    if sys.platform == "win32":
-        import os
-        os.environ.setdefault("PYTHONUNBUFFERED", "1")
+    # Ensure line-buffered stdout for MCP stdio transport
+    sys.stdout.reconfigure(line_buffering=True)
     mcp.run(transport="stdio")
