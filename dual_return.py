@@ -9,9 +9,33 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
-def dual_return(html: str, data: dict[str, Any]) -> str:
-    """Create the universal response envelope as a JSON string."""
-    return json.dumps({"display": html, "data": data})
+def dual_return(html: str | None, data: dict[str, Any]) -> str:
+    """Create the universal response envelope as a JSON string.
+
+    When RESPONSE_MODE is 'data_only', returns only the data dict as JSON.
+    When html is None, behaves the same as data_only mode.
+    """
+    from config import RESPONSE_MODE
+
+    if RESPONSE_MODE == "data_only":
+        return json.dumps(data)
+    return json.dumps({"display": html or "", "data": data})
+
+
+def error_response(
+    error_type: str,
+    message: str,
+    missing_fields: list[str] | None = None,
+    details: list[dict[str, str]] | None = None,
+) -> str:
+    """Create a standardized error response as a JSON string."""
+    return json.dumps({
+        "error": True,
+        "error_type": error_type,
+        "message": message,
+        "missing_fields": missing_fields or [],
+        "details": details or [],
+    })
 
 
 def extract_html(result: str) -> str:

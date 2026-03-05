@@ -133,9 +133,10 @@ class TestXSSProtection:
             conversion_amount=50_000,
         )
         data = _parse(result)
-        html = data["display"]
-        assert "<script>" not in html
-        assert "&lt;script&gt;" in html or "Filing status must be one of" in html
+        # Standardized error response — no HTML at all (safe by design)
+        assert data.get("error") is True
+        assert data["error_type"] == "validation_error"
+        assert "<script>" not in json.dumps(data)
 
 
 # ---------------------------------------------------------------------------

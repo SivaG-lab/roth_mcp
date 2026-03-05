@@ -1,0 +1,5 @@
+# Roth Conversion Calculator — MCP Server Core Dependencies
+# Install with: pip install -r requirements-core.txt
+fastmcp>=2.14,<4.0
+mcp>=1.0,<3.0
+python-dotenv>=1.0,<2.0

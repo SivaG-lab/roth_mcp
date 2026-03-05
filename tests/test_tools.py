@@ -94,8 +94,11 @@ class TestValidateProjectionInputs:
 
     def test_invalid_input_returns_errors(self):
         result = validate_projection_inputs(**_complete_validate_args(current_age=5))
-        parsed = _assert_dual_return(result)
-        assert len(parsed["data"]["errors"]) > 0
+        parsed = _parse_result(result)
+        # Standardized error response format
+        assert parsed.get("error") is True
+        assert parsed["error_type"] == "validation_error"
+        assert len(parsed["details"]) > 0
 
     def test_result_has_inputs_key(self):
         result = validate_projection_inputs(**_complete_validate_args())
@@ -516,8 +519,7 @@ class TestGenerateConversionReport:
         assert "<" in display and ">" in display
 
     def test_handles_missing_sections_gracefully(self):
-        """When some sections are omitted, the report should still generate
-        without raising an error."""
+        """When required sections are omitted, return standardized error."""
         validated = json.dumps({
             "status": "complete",
             "inputs": {"current_age": 55},
@@ -529,12 +531,13 @@ class TestGenerateConversionReport:
         result = generate_conversion_report(
             validated_inputs=validated,
         )
-        parsed = _assert_dual_return(result)
-        # Should not raise, and should still return a valid dual-return
-        assert isinstance(parsed["data"], dict)
+        parsed = _parse_result(result)
+        # Now returns missing_required_fields error for missing tax_analysis
+        assert parsed.get("error") is True
+        assert "tax_analysis" in parsed["missing_fields"]
 
     def test_handles_empty_string_sections(self):
-        """When sections are provided as empty strings, report still works."""
+        """When required sections are empty strings, return standardized error."""
         result = generate_conversion_report(
             validated_inputs="",
             tax_analysis="",
@@ -542,5 +545,6 @@ class TestGenerateConversionReport:
             optimization_data="",
             breakeven_data="",
         )
-        parsed = _assert_dual_return(result)
-        assert isinstance(parsed["data"], dict)
+        parsed = _parse_result(result)
+        assert parsed.get("error") is True
+        assert parsed["error_type"] == "missing_required_fields"

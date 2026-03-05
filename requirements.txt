@@ -1,11 +1,11 @@
 # Roth Conversion Calculator MCP Server v2.0
-# Core dependencies
-fastmcp>=2.14,<4.0
+# Core MCP server dependencies
+-r requirements-core.txt
+
+# Client dependencies (Streamlit UI, GPT agent)
 streamlit>=1.33,<2.0
 openai>=1.0,<3.0
-mcp>=1.0,<3.0
 nest-asyncio>=1.6,<2.0
-python-dotenv>=1.0,<2.0
 
 # Testing
 pytest>=8.0

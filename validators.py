@@ -6,10 +6,21 @@ and returns structured result with status/inputs/assumptions/errors.
 
 from __future__ import annotations
 
+from typing import Literal
+
 from tax.state_rates import STATE_TAX_RATES
 
 VALID_FILING_STATUSES = {"single", "married_joint", "married_separate", "head_of_household"}
 VALID_STATES = set(STATE_TAX_RATES.keys())
+
+FilingStatus = Literal["single", "married_joint", "married_separate", "head_of_household"]
+StateCode = Literal[
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC",
+]
 REQUIRED_FIELDS = ["current_age", "retirement_age", "filing_status", "state", "annual_income", "trad_ira_balance"]
 
 
